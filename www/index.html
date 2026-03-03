@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com;">
+<title>ASB Foundation — Tournament Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060a14;--bg1:#0b1220;--bg2:#0d1628;--bg3:#0f1d30;
+  --blue:#1a6aff;--blue2:#4d9fff;--red:#e0263e;--red2:#ff5571;
+  --purple:#7040c8;--gold:#f5c842;--silver:#b0bec5;--bronze:#cd8c50;
+  --green:#3dba72;--orange:#e07040;--t1:#e8f0ff;--t2:#7a9abc;--t3:#3a5570;--border:#162235;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ─── HEADER ─── */
+header{position:sticky;top:0;z-index:100;background:#060a14f0;backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.hdr-top{display:flex;align-items:center;gap:10px;padding:9px 14px}
+.logo-hex{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--red));
+  clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;color:#fff;flex-shrink:0;
+  animation:hexP 3s ease-in-out infinite alternate;cursor:pointer}
+@keyframes hexP{0%{box-shadow:0 0 12px #1a6aff33}100%{box-shadow:0 0 24px #1a6aff66,0 0 10px #e0263e33}}
+.logo-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;
+  background:linear-gradient(90deg,var(--blue2),#fff 55%,var(--red2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.logo-sub{font-size:6px;letter-spacing:4px;color:var(--t3);text-transform:uppercase;margin-top:-2px}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:7px}
+.season-badge{font-size:7px;letter-spacing:1px;color:var(--t3);text-transform:uppercase;
+  border:1px solid var(--border);padding:3px 8px;border-radius:20px;background:#ffffff04;white-space:nowrap}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* PROFILE AREA */
+.profile-area{display:flex;align-items:center;gap:6px;position:relative}
+.profile-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:#fff;
+  cursor:pointer;overflow:hidden;transition:border-color .2s;flex-shrink:0}
+.profile-avatar:hover{border-color:var(--blue2)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.menu-dots{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:#0d1628;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:13px;color:var(--t2);transition:all .2s;flex-shrink:0;letter-spacing:-1px}
+.menu-dots:hover{border-color:var(--blue2);color:#fff}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  min-width:140px;box-shadow:0 8px 28px #00000066;z-index:300;
+  opacity:0;pointer-events:none;transform:translateY(-6px);transition:all .2s}
+.profile-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.pd-item{padding:10px 14px;font-size:11px;color:var(--t2);cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all .15s;border-radius:8px;margin:3px}
+.pd-item:hover{background:#ffffff08;color:#fff}
+.pd-item.danger{color:var(--red2)}
+.pd-item.danger:hover{background:#e0263e12}
+.pd-sep{height:1px;background:var(--border);margin:2px 0}
+
+.stats-bar{display:flex;background:#07101e;border-bottom:1px solid var(--border);overflow-x:auto}
+.stat-item{flex:1;min-width:55px;padding:6px 4px;text-align:center;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-n{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;
+  background:linear-gradient(135deg,var(--blue2),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:6px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-top:1px}
+
+.nav-bar{display:flex;background:#080f1c;border-bottom:1px solid var(--border);overflow-x:auto;padding:0 2px}
+.nav-btn{position:relative;height:40px;padding:0 11px;border:none;cursor:pointer;background:transparent;
+  font-family:'Rajdhani',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--t2);transition:color .25s;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
+.nav-btn::after{content:'';position:absolute;bottom:0;left:50%;right:50%;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--red));transition:left .25s,right .25s}
+.nav-btn:hover{color:#fff}.nav-btn.active{color:#fff}
+.nav-btn.active::after,.nav-btn:hover::after{left:0;right:0}
+.nav-num{width:15px;height:15px;background:linear-gradient(135deg,var(--blue),var(--purple));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;flex-shrink:0}
+.nav-btn.admin-btn{color:var(--gold)}
+.nav-btn.admin-btn .nav-num{background:linear-gradient(135deg,var(--gold),var(--orange))}
+
+main{position:relative;z-index:5;max-width:820px;margin:0 auto;padding:16px 11px 80px}
+.section{display:none;animation:fadeUp .28s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.sec-title{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:2px;background:linear-gradient(90deg,var(--blue2),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sec-sub{color:var(--t3);font-size:7px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px}
+
+/* ─── SHARED ─── */
+.tbadge{font-size:8px;font-weight:700;letter-spacing:.8px;padding:1px 6px;border-radius:3px;font-family:'Rajdhani',sans-serif;flex-shrink:0}
+.tb{background:#0a2448;color:var(--blue2);border:1px solid #1a4a8a44}
+.tbp{background:#1a1040;color:#a070ff;border:1px solid #3a2a8044}
+.ta{background:#2e0d12;color:#ff7755;border:1px solid #6a1a1a44}
+.ts{background:#1a1400;color:var(--gold);border:1px solid #5a4a0044}
+.chip{font-size:9px;padding:2px 7px;border-radius:20px;letter-spacing:.3px;font-weight:600;display:flex;align-items:center;gap:3px}
+.cchamp{background:linear-gradient(135deg,#0e3320,#071a10);color:var(--green);border:1px solid #1a5a3044}
+.crunner{background:linear-gradient(135deg,#3a1a00,#250e00);color:var(--orange);border:1px solid #6a402044}
+.ccancel{background:#111;color:var(--t3);border:1px solid #222;font-style:italic}
+.ccoming{background:linear-gradient(135deg,#0d1a38,#070e20);color:#6090ff;border:1px solid #1a2a5a}
+.ic{color:var(--gold)}.ir{color:var(--orange)}
+.tag2v2{font-size:7px;color:var(--t3);background:#ffffff06;padding:1px 5px;border-radius:3px;border:1px solid var(--border)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:12px 0}
+.legend-box{padding:7px 11px;background:var(--bg1);border:1px solid var(--border);border-radius:7px;font-size:9px;color:var(--t3);line-height:2}
+.btn-primary{padding:8px 18px;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;
+  border-radius:7px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1px;cursor:pointer;transition:opacity .2s;text-transform:uppercase}
+.btn-primary:hover{opacity:.85}
+.btn-danger{padding:8px 18px;background:linear-gradient(135deg,var(--red),#8a1020);border:none;
+  border-radius:7px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1px;cursor:pointer;transition:opacity .2s}
+.btn-danger:hover{opacity:.85}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  padding:10px 20px;font-size:11px;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--green);color:var(--green)}
+.toast.error{border-color:var(--red2);color:var(--red2)}
+.toast.info{border-color:var(--blue2);color:var(--blue2)}
+
+/* ─── AUTH FORMS ─── */
+.auth-wrap{max-width:360px;margin:0 auto;padding:24px 0}
+.auth-card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:24px}
+.auth-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;
+  background:linear-gradient(90deg,var(--blue2),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.auth-sub{font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.form-group{margin-bottom:12px}
+.form-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:7px;color:var(--t1);font-family:'Exo 2',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--blue);box-shadow:0 0 8px #1a6aff15}
+.form-input::placeholder{color:var(--t3)}
+.form-select{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:7px;color:var(--t1);font-family:'Exo 2',sans-serif;font-size:13px;outline:none;
+  cursor:pointer;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+.form-select:focus{border-color:var(--blue)}
+.auth-switch{margin-top:14px;text-align:center;font-size:10px;color:var(--t3)}
+.auth-switch a{color:var(--blue2);cursor:pointer;text-decoration:none}
+.auth-switch a:hover{color:#fff}
+
+/* ─── PROFILE MODAL ─── */
+.prof-modal{max-width:340px}
+.prof-avatar-big{width:80px;height:80px;border-radius:50%;border:3px solid var(--blue);
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:#fff;
+  margin:0 auto 12px;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s}
+.prof-avatar-big:hover{border-color:var(--gold)}
+.prof-avatar-big img{width:100%;height:100%;object-fit:cover}
+.prof-avatar-overlay{position:absolute;inset:0;background:#000000aa;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;font-size:22px}
+.prof-avatar-big:hover .prof-avatar-overlay{opacity:1}
+.prof-name{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:#fff;text-align:center}
+.prof-role{font-size:9px;letter-spacing:3px;text-transform:uppercase;text-align:center;margin-top:3px}
+.prof-role.admin{color:var(--gold)}
+.prof-role.member{color:var(--blue2)}
+.prof-stats{display:flex;gap:8px;margin-top:14px}
+.pstat-box{flex:1;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 4px}
+.pstat-n{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--blue2)}
+.pstat-l{font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase}
+
+/* ─── ORGANIZER ─── */
+.search-wrap{position:relative;margin-bottom:8px}
+.search-input{width:100%;padding:7px 11px 7px 32px;background:var(--bg1);border:1px solid var(--border);
+  border-radius:7px;color:var(--t1);font-family:'Exo 2',sans-serif;font-size:12px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--blue);box-shadow:0 0 8px #1a6aff18}
+.search-input::placeholder{color:var(--t3)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px}
+.filter-row{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.fpill{padding:2px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;
+  color:var(--t3);font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.fpill:hover{border-color:var(--blue2);color:var(--blue2)}
+.fpill.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.fpill.fb.on{background:#0d2a5a;border-color:var(--blue2);color:var(--blue2)}
+.fpill.fbp.on{background:#1a1040;border-color:#a070ff;color:#a070ff}
+.fpill.fa.on{background:#3a0d14;border-color:#ff7755;color:#ff7755}
+.org-block{margin-bottom:12px;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:var(--bg1);transition:box-shadow .25s}
+.org-block:hover{box-shadow:0 4px 22px #1a6aff12}
+.org-hdr{display:flex;align-items:center;gap:7px;padding:8px 12px;
+  background:linear-gradient(135deg,#0d1e36,#0b1422);border-bottom:1px solid var(--border);position:relative}
+.org-hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--red))}
+.org-tag{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);padding:1px 5px;border:1px solid var(--border);border-radius:3px}
+.org-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.org-count{margin-left:auto;font-size:7px;color:var(--t3);letter-spacing:1px}
+.org-badge{font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px;color:#fff;opacity:.85}
+.tr{padding:7px 12px;border-bottom:1px solid #0c1825;transition:background .15s;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.tr:last-child{border-bottom:none}
+.tr:hover{background:#ffffff03}
+.tr.hidden{display:none}
+.tr-name{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--t1);
+  display:flex;align-items:center;gap:5px;flex:1;min-width:80px;flex-wrap:wrap}
+.tr-status{font-size:8px;color:var(--t3);letter-spacing:1px}
+.ct{color:var(--orange)!important}.ut{color:var(--blue2)!important}
+.tr-players{display:flex;gap:4px;flex-wrap:wrap}
+.no-result{text-align:center;padding:24px;color:var(--t3);font-size:11px;display:none}
+
+/* ─── ACHIEVEMENT ─── */
+.featured-card{position:relative;overflow:hidden;margin-bottom:12px;padding:12px 14px;
+  background:linear-gradient(135deg,#0d1e38,#0f1430);border:1px solid #1a6aff33;border-radius:10px;display:flex;align-items:center;gap:12px}
+.featured-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#1a6aff07,transparent 60%,#e0263e05);pointer-events:none}
+.featured-glow{position:absolute;top:-14px;right:-14px;width:80px;height:80px;
+  border-radius:50%;background:radial-gradient(circle,#1a6aff12,transparent 70%);pointer-events:none}
+.fc-icon{font-size:22px;flex-shrink:0;filter:drop-shadow(0 0 7px var(--gold))}
+.fc-info{flex:1}
+.fc-label{font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--blue2);margin-bottom:2px}
+.fc-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.1}
+.fc-stat{font-size:8px;color:var(--t2);margin-top:2px}
+.fc-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.tap-hint{font-size:8px;color:var(--t3);text-align:center;margin-bottom:6px;letter-spacing:1px}
+.lboard{display:flex;flex-direction:column;gap:5px}
+.prow{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;
+  background:var(--bg1);border:1px solid var(--border);border-radius:8px;
+  transition:all .22s;cursor:pointer;position:relative;overflow:hidden}
+.prow::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--blue),var(--red));opacity:0;transition:opacity .22s}
+.prow:hover{border-color:#1a6aff2a;background:var(--bg2);box-shadow:0 3px 14px #1a6aff12}
+.prow:hover::before{opacity:1}
+.prow.ach-hidden{display:none}
+.prank{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--t3);min-width:18px;text-align:center;padding-top:1px;flex-shrink:0}
+.rank1{color:var(--gold);text-shadow:0 0 8px #f5c84255}
+.rank2{color:var(--silver)}.rank3{color:var(--bronze)}
+.pinfo{flex:1;min-width:0}
+.pname{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:1px}
+.psumm{font-size:8px;color:var(--t3);margin-bottom:4px}
+.alist{display:flex;flex-direction:column;gap:3px}
+.aitem{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.alabel{font-size:9px;font-weight:700;letter-spacing:.3px;min-width:62px}
+.lc{color:var(--gold)}.lr{color:var(--orange)}
+.atourn{color:var(--t3);font-size:9px}
+.wrrow{display:flex;align-items:center;gap:6px;margin-top:5px}
+.wrl{font-size:7px;color:var(--t3);letter-spacing:1px;white-space:nowrap}
+.wrt{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.wrf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .5s ease}
+.wrp{font-size:8px;color:var(--blue2);font-weight:700;white-space:nowrap}
+.btbadge{margin-left:auto;font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;
+  padding:2px 7px;border-radius:20px;flex-shrink:0;align-self:flex-start;margin-top:1px}
+.btB{background:#0a2448;color:var(--blue2);border:1px solid #1a6aff22}
+.btBP{background:#1a1040;color:#a070ff;border:1px solid #6040c822}
+.btA{background:#2e0d12;color:#ff7755;border:1px solid #e0263e22}
+.ach-search-wrap{position:relative;margin-bottom:9px}
+.ach-search{width:100%;padding:7px 11px 7px 32px;background:var(--bg1);border:1px solid var(--border);
+  border-radius:7px;color:var(--t1);font-family:'Exo 2',sans-serif;font-size:12px;outline:none;transition:border-color .2s}
+.ach-search:focus{border-color:var(--blue)}
+.ach-search::placeholder{color:var(--t3)}
+
+/* ─── STATS DASHBOARD ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.dash-card{background:var(--bg1);border:1px solid var(--border);border-radius:9px;padding:12px 13px}
+.dash-card.full{grid-column:1/-1}
+.dash-title{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:9px}
+.bar-chart{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:7px}
+.bar-label{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;color:var(--t1);min-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;color:var(--blue2);min-width:16px;text-align:right}
+.donut-wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.donut-legend{display:flex;flex-direction:column;gap:5px}
+.dleg-row{display:flex;align-items:center;gap:6px}
+.dleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dleg-lbl{font-size:9px;color:var(--t2)}
+.dleg-val{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;color:var(--t1);margin-left:4px}
+.funfact-wrap{display:flex;flex-direction:column;gap:6px}
+.funfact{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)}
+.funfact-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.funfact-text{font-size:10px;color:var(--t2);line-height:1.6}
+.funfact-text b{color:var(--t1)}
+
+/* ─── REAL-TIME VOTE ─── */
+.pred-card{background:linear-gradient(135deg,#0f1a2e,#14102a);border:1px solid #f5c84222;border-radius:10px;padding:13px;margin-bottom:10px}
+.pred-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pred-icon{font-size:17px}
+.pred-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.pred-sub{font-size:8px;color:var(--t3);letter-spacing:1px}
+.pred-options{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.pred-opt{display:flex;align-items:center;gap:9px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.pred-opt:hover{border-color:var(--blue2);background:#0d1e38}
+.pred-opt.voted{border-color:var(--gold);background:#1a1400}
+.pred-opt.disabled{cursor:default}
+.pred-opt-bg{position:absolute;inset:0;opacity:.07;transition:width .6s ease;pointer-events:none}
+.pred-opt-name{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:#fff;flex:1;position:relative}
+.pred-opt-bar{flex:2;height:5px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
+.pred-opt-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--gold));transition:width .6s ease}
+.pred-opt-pct{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;color:var(--gold);min-width:30px;text-align:right;position:relative}
+.pred-total{font-size:8px;color:var(--t3);letter-spacing:1px;text-align:right}
+.realtime-badge{display:inline-flex;align-items:center;gap:4px;font-size:7px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--green);padding:2px 8px;
+  background:#0e332015;border:1px solid #3dba7233;border-radius:20px;margin-bottom:8px}
+
+/* ─── H2H ─── */
+.h2h-select-row{display:flex;gap:7px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.h2h-select{flex:1;min-width:110px;padding:7px 9px;background:var(--bg1);border:1px solid var(--border);
+  border-radius:7px;color:var(--t1);font-family:'Exo 2',sans-serif;font-size:12px;outline:none;cursor:pointer;
+  transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.h2h-select:focus{border-color:var(--blue)}
+.h2h-vs{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--red2);letter-spacing:2px;flex-shrink:0}
+.h2h-go{padding:7px 14px;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;
+  border-radius:7px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:1px;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+.h2h-go:hover{opacity:.85}
+.h2h-result{background:var(--bg1);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.h2h-header{display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center;
+  padding:14px;background:linear-gradient(135deg,#0d1e38,#0e1430);border-bottom:1px solid var(--border)}
+.h2h-player{text-align:center}
+.h2h-pname{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.h2h-pstat{font-size:9px;color:var(--t3);margin-top:2px}
+.h2h-score{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;
+  background:linear-gradient(135deg,var(--blue2),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h2h-meetings{padding:11px 13px}
+.h2h-meet-title{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.h2h-meet-row{display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--bg2);
+  border-radius:7px;margin-bottom:4px;border:1px solid var(--border)}
+.h2h-meet-tourn{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;color:var(--t1);flex:1}
+.h2h-meet-result{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px}
+.h2h-win1{background:#0e332022;color:var(--green);border:1px solid #1a5a3033}
+.h2h-win2{background:#3a1a0022;color:var(--orange);border:1px solid #6a402033}
+.h2h-nomeet{text-align:center;padding:22px;color:var(--t3);font-size:12px}
+.rivalry-card{padding:12px 13px;background:linear-gradient(135deg,#0f1a2e,#14102a);
+  border:1px solid #e0263e22;border-radius:10px;margin-bottom:9px;position:relative;overflow:hidden}
+.rivalry-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,#e0263e07);pointer-events:none}
+.rivalry-label{font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--red2);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.rivalry-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#e0263e22,transparent)}
+.rivalry-names{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:3px}
+.rivalry-names span{color:var(--red2)}
+.rivalry-stat{font-size:9px;color:var(--t2)}
+.rivalry-meetings{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.riv-row{display:flex;align-items:center;gap:6px;padding:5px 8px;background:#0a101e;border-radius:6px;border:1px solid var(--border)}
+.riv-tourn{font-size:10px;color:var(--t1);flex:1;font-family:'Rajdhani',sans-serif;font-weight:600}
+.riv-out{font-size:8px;font-weight:700;padding:1px 6px;border-radius:20px}
+
+/* ─── HALL OF FAME ─── */
+.hof-grid{display:grid;gap:7px}
+.hof-card{display:flex;align-items:center;gap:11px;padding:10px 13px;
+  background:var(--bg1);border:1px solid var(--border);border-radius:9px;
+  position:relative;overflow:hidden;transition:all .22s}
+.hof-card:hover{box-shadow:0 3px 14px #1a6aff12}
+.hof-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px}
+.hof-card.gold::before{background:var(--gold)}
+.hof-card.blue::before{background:var(--blue)}
+.hof-card.red::before{background:var(--red)}
+.hof-card.purple::before{background:var(--purple)}
+.hof-card.green::before{background:var(--green)}
+.hof-icon{font-size:19px;flex-shrink:0}
+.hof-info{flex:1}
+.hof-title{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:2px}
+.hof-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.hof-desc{font-size:9px;color:var(--t2);margin-top:1px}
+.hof-badge{font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+
+/* ─── TIER ─── */
+.compare-toggle{display:flex;gap:5px;margin-bottom:9px}
+.ctbtn{flex:1;padding:6px;border-radius:7px;border:1px solid var(--border);background:transparent;
+  font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--t3);cursor:pointer;text-transform:uppercase;transition:all .2s}
+.ctbtn.on{background:linear-gradient(135deg,#0d1e38,#101428);border-color:var(--blue2);color:var(--blue2)}
+.tier-grid{display:grid;gap:6px}
+.tier-card{display:grid;grid-template-columns:50px 1fr;gap:9px;align-items:center;
+  background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:9px 12px;transition:all .22s}
+.tier-card:hover{border-color:#1a6aff2a;box-shadow:0 3px 12px #1a6aff12}
+.tier-card.inactive{opacity:.27;pointer-events:none}
+.tlabel{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;text-align:center;letter-spacing:2px}
+.tB{color:var(--blue2)}.tBP{color:#a070ff}.tA{color:#ff7755}.tS{color:var(--gold)}
+.tdesc{font-size:11px;color:var(--t2);line-height:1.6}
+.tdesc strong{color:var(--t1)}
+
+/* ─── TIMELINE ─── */
+.season-track{margin-bottom:14px;padding:11px 12px;background:var(--bg1);border:1px solid var(--border);border-radius:9px}
+.st-title{font-family:'Rajdhani',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--t2);margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.st-title .sorg{font-size:7px;padding:2px 7px;border-radius:20px;background:linear-gradient(135deg,var(--red),var(--purple));color:#fff}
+.strack{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:3px}
+.snode{display:flex;flex-direction:column;align-items:center;min-width:52px;position:relative}
+.snode:not(:last-child)::after{content:'';position:absolute;top:8px;left:calc(50% + 9px);right:calc(-50% + 9px);height:2px;background:linear-gradient(90deg,var(--blue)55,#1a3a5a)}
+.snode.sxl:not(:last-child)::after{background:linear-gradient(90deg,var(--orange)33,#1a1a1a)}
+.sdot{width:16px;height:16px;border-radius:50%;border:2px solid var(--blue2);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;color:var(--blue2);
+  margin-bottom:4px;flex-shrink:0}
+.sdot.done{background:var(--blue)}
+.sdot.sdx{border-color:var(--orange);background:#2a1200;color:var(--orange)}
+.sdot.sdu{border-color:var(--gold);background:#1a1200;color:var(--gold);animation:blink 1.5s infinite}
+.snode-n{font-family:'Rajdhani',sans-serif;font-size:7px;font-weight:600;color:var(--t2);text-align:center;white-space:nowrap}
+.snode-t{font-size:6px;color:var(--t3);margin-top:1px;text-align:center}
+.timeline{position:relative;padding-left:17px}
+.timeline::before{content:'';position:absolute;left:3px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--blue) 0%,var(--red) 70%,transparent 100%)}
+.tl-item{position:relative;margin-bottom:8px;padding:7px 10px;
+  background:var(--bg1);border:1px solid var(--border);border-radius:8px;transition:all .22s}
+.tl-item:hover{border-color:#1a6aff2a;box-shadow:0 3px 12px #1a6aff12}
+.tl-dot{position:absolute;left:-14px;top:11px;width:7px;height:7px;border-radius:50%;
+  border:2px solid var(--blue);background:var(--bg)}
+.tl-dot.c{border-color:var(--orange)}
+.tl-dot.u{border-color:var(--gold);animation:blink 1.5s infinite}
+.tl-hdr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.tl-name{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:#fff}
+.tl-org{font-size:7px;color:var(--blue2);padding:1px 5px;background:#1a6aff10;border:1px solid #1a6aff2a;border-radius:10px}
+.tl-season{font-size:7px;color:var(--t3);letter-spacing:1px}
+.tl-res{display:flex;gap:4px;flex-wrap:wrap}
+.tag-xl{font-size:7px;color:var(--orange);padding:1px 5px;background:#e0704010;border:1px solid #e0704033;border-radius:10px}
+.tag-up{font-size:7px;color:var(--gold);padding:1px 5px;background:#f5c84210;border:1px solid #f5c84233;border-radius:10px;animation:blink 1.5s infinite}
+.tag2vtl{font-size:7px;color:var(--t3);padding:1px 4px;background:#ffffff06;border:1px solid var(--border);border-radius:3px}
+
+/* ─── ADMIN PANEL ─── */
+.admin-section{margin-bottom:14px;background:var(--bg1);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.admin-sec-hdr{padding:10px 14px;background:linear-gradient(135deg,#0d1e36,#0b1422);border-bottom:1px solid var(--border);
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  display:flex;align-items:center;gap:7px;color:var(--gold)}
+.admin-sec-hdr .admin-icon{font-size:14px}
+.admin-form{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.admin-form.one-col{grid-template-columns:1fr}
+.admin-form .full{grid-column:1/-1}
+.admin-list{padding:0}
+.admin-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #0c1825;transition:background .15s}
+.admin-item:last-child{border-bottom:none}
+.admin-item:hover{background:#ffffff03}
+.admin-item-info{flex:1;min-width:0}
+.admin-item-name{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:#fff}
+.admin-item-sub{font-size:9px;color:var(--t3);margin-top:1px}
+.admin-item-actions{display:flex;gap:5px;flex-shrink:0}
+.btn-sm{padding:3px 9px;border-radius:5px;border:none;cursor:pointer;
+  font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;transition:opacity .2s}
+.btn-sm:hover{opacity:.8}
+.btn-sm-edit{background:#0d2a5a;color:var(--blue2);border:1px solid #1a6aff22}
+.btn-sm-del{background:#2e0d12;color:var(--red2);border:1px solid #e0263e22}
+.btn-sm-save{background:#0e3320;color:var(--green);border:1px solid #3dba7222}
+.admin-locked{display:flex;align-items:center;justify-content:center;gap:10px;padding:28px;
+  color:var(--t3);font-size:11px;flex-direction:column}
+.admin-locked .lock-icon{font-size:28px}
+.edit-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap;width:100%;padding:5px 0}
+
+/* ─── MODAL ─── */
+#overlay{display:none;position:fixed;inset:0;z-index:500;background:#000000cc;backdrop-filter:blur(5px);
+  align-items:center;justify-content:center;padding:14px;opacity:0;transition:opacity .22s}
+#overlay.open{opacity:1;display:flex}
+#modal{background:var(--bg2);border:1px solid #1a6aff44;border-radius:12px;
+  width:100%;max-width:400px;padding:16px;position:relative;
+  box-shadow:0 12px 40px #00000088,0 0 26px #1a6aff18;
+  max-height:84vh;overflow-y:auto;
+  transform:translateY(10px);transition:transform .22s}
+#overlay.open #modal{transform:translateY(0)}
+.m-close{position:absolute;top:10px;right:10px;width:24px;height:24px;
+  background:#0d1828;border:1px solid var(--border);color:var(--t2);
+  border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
+.m-close:hover{background:var(--border);color:#fff}
+.m-name{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#fff;
+  margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.m-stats{display:flex;gap:5px;margin-bottom:9px}
+.ms{flex:1;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 3px}
+.ms-n{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700}
+.ms-l{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-top:1px}
+.m-sec{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);
+  margin:8px 0 5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.m-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:5px 7px;
+  background:var(--bg);border-radius:6px;border:1px solid var(--border);margin-bottom:4px}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#162235;border-radius:2px}
+footer{position:relative;z-index:5;text-align:center;padding:12px;
+  color:var(--t3);font-size:7px;letter-spacing:2px;text-transform:uppercase;border-top:1px solid var(--border)}
+footer b{background:linear-gradient(90deg,var(--blue2),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+@media(max-width:540px){
+  .hdr-top{padding:7px 10px}.logo-text{font-size:13px}.logo-sub{display:none}
+  main{padding:10px 8px 60px}
+  .tier-card{grid-template-columns:38px 1fr}.tlabel{font-size:16px}
+  .h2h-score{font-size:20px}
+  .dash-grid{grid-template-columns:1fr}.dash-card.full{grid-column:1}
+  .admin-form{grid-template-columns:1fr}.admin-form .full{grid-column:1}
+}
+
+/* === PROFILE PAGE OVERLAY === */
+#profPage{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#060a14;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.pp-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(6,10,20,0.96);border-bottom:1px solid #162235;}
+.pp-back{width:34px;height:34px;border-radius:50%;border:1px solid #162235;background:#0b1220;color:#7a9abc;font-size:20px;line-height:34px;text-align:center;cursor:pointer;flex-shrink:0;}
+.pp-back:active{background:#162235;}
+.pp-bartitle{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#4d9fff;}
+.pp-hero{background:linear-gradient(180deg,#0b1628,#060a14);border-bottom:1px solid #162235;padding:28px 16px 22px;text-align:center;}
+.pp-av{width:90px;height:90px;border-radius:50%;margin:0 auto 8px;position:relative;overflow:hidden;cursor:pointer;border:3px solid #162235;background:linear-gradient(135deg,#1a6aff,#7040c8);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:32px;font-weight:700;color:#fff;}
+.pp-av:active{border-color:#4d9fff;}
+.pp-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.pp-cam{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0;}
+.pp-av:active .pp-cam{opacity:1;}
+.pp-hint{font-size:8px;color:#3a5570;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.pp-name{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;letter-spacing:2px;color:#fff;margin-bottom:6px;}
+.pp-role{display:inline-block;padding:3px 14px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.pp-stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.pp-sbox{background:#0b1220;border:1px solid #162235;border-radius:9px;padding:9px 14px;text-align:center;min-width:68px;}
+.pp-sn{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;}
+.pp-sl{font-size:7px;color:#3a5570;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.pp-body{max-width:480px;margin:0 auto;padding:16px 14px 70px;}
+.pp-card{background:#0b1220;border:1px solid #162235;border-radius:11px;padding:16px;margin-bottom:12px;}
+.pp-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid #162235;}
+.pp-card-title{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a9abc;}
+.pp-msg{font-size:11px;text-align:center;border-radius:6px;overflow:hidden;max-height:0;transition:max-height .3s,padding .3s;}
+.pp-msg.show{max-height:52px;padding:7px;margin-top:8px;}
+.pp-msg.ok{color:#3dba72;background:#071a10;border:1px solid #1a5a3044;}
+.pp-msg.err{color:#ff5571;background:#2e0d12;border:1px solid #6a1a1a44;}
+
+</style>
+</head>
+<body>
+<div id="stars"><canvas id="sc"></canvas></div>
+
+<div id="profPage">
+  <div class="pp-bar">
+    <div class="pp-back" onclick="ppClose()">&#8592;</div>
+    <div class="pp-bartitle">Edit Profil</div>
+  </div>
+  <div id="ppBody"></div>
+</div>
+<header>
+  <div class="hdr-top">
+    <div class="logo-hex" onclick="scrollToTop()">ASB</div>
+    <div>
+      <div class="logo-text">ASB FOUNDATION</div>
+      <div class="logo-sub">Tournament Archive</div>
+    </div>
+    <div class="hdr-right">
+      <div class="live-dot"></div>
+      <div class="season-badge">2026 / 2027</div>
+      <div class="profile-area" id="profileArea">
+        <div class="profile-avatar" id="profileAvatar" onclick="openProfileModal()">
+          <span id="avatarInitial">?</span>
+          <img id="avatarImg" style="display:none" src="" alt="">
+        </div>
+        <div class="menu-dots" id="menuDots" onclick="toggleDropdown()">&#8943;</div>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="pd-item" onclick="openProfileModal()">&#9998; Edit Profil</div>
+          <div class="pd-item" onclick="changeAvatar()">&#128247; Ganti Foto Profil</div>
+          <div class="pd-sep"></div>
+          <div class="pd-item" onclick="showAuthForm('login')">&#128275; Login</div>
+          <div class="pd-item" onclick="showAuthForm('signup')">&#128100; Sign Up</div>
+          <div class="pd-sep"></div>
+          <div class="pd-item danger" id="logoutBtn" style="display:none" onclick="logout()">&#128682; Logout</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-item"><div class="stat-n" id="sbTournaments">11</div><div class="stat-l">Turnamen</div></div>
+    <div class="stat-item"><div class="stat-n">3</div><div class="stat-l">Organizer</div></div>
+    <div class="stat-item"><div class="stat-n" id="sbPlayers">10</div><div class="stat-l">Players</div></div>
+    <div class="stat-item"><div class="stat-n" id="sbCompleted">9</div><div class="stat-l">Selesai</div></div>
+    <div class="stat-item"><div class="stat-n" id="sbCanceled">2</div><div class="stat-l">Canceled</div></div>
+    <div class="stat-item"><div class="stat-n" id="sbUpcoming">1</div><div class="stat-l">Upcoming</div></div>
+  </div>
+  <div id="announceBanner" style="display:none;background:linear-gradient(90deg,#1a1400,#0f1a00);border-bottom:1px solid #f5c84233;padding:6px 14px;align-items:center;gap:8px">
+  <span style="font-size:10px;color:var(--gold);font-family:Rajdhani,sans-serif;font-weight:700;letter-spacing:1px;white-space:nowrap">&#128226; INFO</span>
+  <span id="announceText" style="font-size:10px;color:var(--t2);flex:1"></span>
+  <span onclick="dismissAnnounce()" style="font-size:16px;color:var(--t3);cursor:pointer;padding:0 4px">&#x2715;</span>
+</div>
+<nav class="nav-bar" id="navBar">
+    <button class="nav-btn active" data-target="organizer"><div class="nav-num">1</div>Organizer</button>
+    <button class="nav-btn" data-target="achievement"><div class="nav-num">2</div>Achievement</button>
+    <button class="nav-btn" data-target="stats"><div class="nav-num">3</div>Stats</button>
+    <button class="nav-btn" data-target="h2h"><div class="nav-num">4</div>H2H</button>
+    <button class="nav-btn" data-target="hof"><div class="nav-num">5</div>Hall of Fame</button>
+    <button class="nav-btn" data-target="tier"><div class="nav-num">6</div>Tier</button>
+    <button class="nav-btn" data-target="timeline"><div class="nav-num">7</div>Timeline</button>
+    <button class="nav-btn admin-btn" data-target="admin" id="adminNavBtn" style="display:none"><div class="nav-num">&#9733;</div>Admin</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ═══ 1. ORGANIZER ═══ -->
+<section class="section active" id="organizer">
+  <div class="sec-title">List Organizer</div>
+  <div class="sec-sub">Semua organisasi yang terlibat dalam ASB Foundation</div>
+  <div class="search-wrap">
+    <span class="search-icon">&#9906;</span>
+    <input class="search-input" id="orgSearch" type="text" placeholder="Cari turnamen atau player...">
+  </div>
+  <div class="filter-row">
+    <button class="fpill on" data-f="all">Semua</button>
+    <button class="fpill fb" data-f="B">Tier B</button>
+    <button class="fpill fbp" data-f="B+">Tier B+</button>
+    <button class="fpill fa" data-f="A">Tier A</button>
+    <button class="fpill" data-f="canceled">Canceled</button>
+  </div>
+  <div id="orgContainer"></div>
+  <div class="no-result" id="noResult">Tidak ada hasil yang cocok.</div>
+</section>
+
+
+<!-- ═══ 2. ACHIEVEMENT ═══ -->
+<section class="section" id="achievement">
+  <div class="sec-title">Achievement Players</div>
+  <div class="sec-sub">Ranking berdasarkan total prestasi</div>
+  <div class="featured-card" id="featuredCard">
+    <div class="featured-glow"></div>
+    <div class="fc-icon">&#9819;</div>
+    <div class="fc-info" id="featuredInfo"></div>
+  </div>
+  <p class="tap-hint">&#128075; Tap kartu player untuk detail</p>
+  <div class="ach-search-wrap">
+    <span class="search-icon">&#9906;</span>
+    <input class="ach-search" id="achSearch" type="text" placeholder="Cari nama player...">
+  </div>
+  <div class="lboard" id="lboard"></div>
+  <div class="legend-box" style="margin-top:9px">
+    <b style="color:var(--t2)">Keterangan :</b>
+    <span style="color:var(--gold);font-weight:700">&#9733; Champion</span> = Juara 1 &nbsp;|&nbsp;
+    <span style="color:var(--orange);font-weight:700">&#9650; Runner-up</span> = Juara 2 &nbsp;|&nbsp;
+    Win Rate = Champ &#247; (Champ + RU)
+  </div>
+</section>
+
+
+<!-- ═══ 3. STATS ═══ -->
+<section class="section" id="stats">
+  <div class="sec-title">Stats Dashboard</div>
+  <div class="sec-sub">Analisis data visual turnamen ASB Foundation</div>
+  <div class="dash-grid">
+    <div class="dash-card full">
+      <div class="dash-title">Champion Terbanyak</div>
+      <div class="bar-chart" id="champChart"></div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-title">Distribusi Tier (Selesai)</div>
+      <div class="donut-wrap">
+        <canvas id="donutCanvas" width="80" height="80" style="flex-shrink:0"></canvas>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-title">Turnamen per Season</div>
+      <div class="bar-chart" id="seasonChart"></div>
+    </div>
+    <div class="dash-card full">
+      <div class="dash-title">Fun Facts</div>
+      <div class="funfact-wrap" id="funfacts"></div>
+    </div>
+  </div>
+  <div class="pred-card">
+    <div class="pred-header">
+      <div class="pred-icon">&#128302;</div>
+      <div>
+        <div class="pred-title" id="predDynTitle">Prediksi HX F1 — Tier A</div>
+        <div class="pred-sub" id="predDynSub">Siapa yang bakal juara? Vote sekarang!</div>
+      </div>
+      <div style="margin-left:auto">
+        <div class="realtime-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1s infinite;display:inline-block"></span>Real-Time</div>
+      </div>
+    </div>
+    <div class="pred-options" id="predOptions"></div>
+    <div class="pred-total" id="predTotal">Memuat votes...</div>
+  </div>
+</section>
+
+
+<!-- ═══ 4. H2H ═══ -->
+<section class="section" id="h2h">
+  <div class="sec-title">Head-to-Head</div>
+  <div class="sec-sub">Pilih 2 player — lihat siapa lebih unggul</div>
+  <div class="h2h-select-row">
+    <select class="h2h-select" id="h2hP1"><option value="">-- Player 1 --</option></select>
+    <div class="h2h-vs">VS</div>
+    <select class="h2h-select" id="h2hP2"><option value="">-- Player 2 --</option></select>
+    <button class="h2h-go" id="h2hGo">Lihat</button>
+  </div>
+  <div id="h2hResult"></div>
+  <div class="divider"></div>
+  <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:9px;display:flex;align-items:center;gap:7px">Rivalry Terpanas<span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)"></span></div>
+  <div class="rivalry-card">
+    <div class="rivalry-label">Rivalry #1 &nbsp;&#183;&nbsp; 2 Pertemuan</div>
+    <div class="rivalry-names">Ryan <span>vs</span> Grezly</div>
+    <div class="rivalry-stat">Ryan <b style="color:var(--gold)">2-0</b> Grezly dalam champion vs runner-up</div>
+    <div class="rivalry-meetings">
+      <div class="riv-row"><span class="riv-tourn">ER3 S2 2026/2027</span><span class="tbadge tbp">B+</span><span class="riv-out" style="background:#0e332022;color:var(--green);border:1px solid #1a5a3033">Ryan &#9733;</span></div>
+      <div class="riv-row"><span class="riv-tourn">EWL S5 2026/2027</span><span class="tbadge tbp">B+</span><span class="riv-out" style="background:#3a1a0022;color:var(--orange);border:1px solid #6a402033">Grezly &#9650;</span></div>
+    </div>
+  </div>
+  <div class="rivalry-card" style="border-color:#4d9fff22">
+    <div class="rivalry-label" style="color:var(--blue2)">Rivalry #2 &nbsp;&#183;&nbsp; 2 Pertemuan<span style="flex:1;height:1px;background:linear-gradient(90deg,var(--blue2)22,transparent)"></span></div>
+    <div class="rivalry-names">Ryan <span style="color:var(--blue2)">vs</span> Yoga</div>
+    <div class="rivalry-stat">Ryan <b style="color:var(--gold)">2-0</b> Yoga — dominasi penuh</div>
+    <div class="rivalry-meetings">
+      <div class="riv-row"><span class="riv-tourn">A-Worlds 2024/2025</span><span class="tbadge ta">A</span><span class="riv-out" style="background:#0e332022;color:var(--green);border:1px solid #1a5a3033">Ryan &#9733;</span></div>
+      <div class="riv-row"><span class="riv-tourn">FFS6 2025/2026</span><span class="tbadge tb">B</span><span class="riv-out" style="background:#0e332022;color:var(--green);border:1px solid #1a5a3033">Ryan &#9733;</span></div>
+    </div>
+  </div>
+  <div class="rivalry-card" style="border-color:#a070ff22">
+    <div class="rivalry-label" style="color:#a070ff">Rivalry #3 &nbsp;&#183;&nbsp; 2 Pertemuan<span style="flex:1;height:1px;background:linear-gradient(90deg,#a070ff22,transparent)"></span></div>
+    <div class="rivalry-names">Ryan <span style="color:#a070ff">vs</span> Dika</div>
+    <div class="rivalry-stat">Ryan <b style="color:var(--gold)">1</b>&#9733; Dika <b style="color:var(--gold)">1</b>&#9733; — seimbang!</div>
+    <div class="rivalry-meetings">
+      <div class="riv-row"><span class="riv-tourn">ACL S1 2024/2025</span><span class="tbadge tb">B</span><span class="riv-out" style="background:#0e332022;color:var(--green);border:1px solid #1a5a3033">Ryan &#9733;</span></div>
+      <div class="riv-row"><span class="riv-tourn">EC4 S1 2026/2027</span><span class="tbadge tb">B</span><span class="riv-out" style="background:#0e332022;color:var(--green);border:1px solid #1a5a3033">Dika &#9733;</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ 5. HALL OF FAME ═══ -->
+<section class="section" id="hof">
+  <div class="sec-title">Hall of Fame</div>
+  <div class="sec-sub">Milestone dan rekor bersejarah ASB Foundation</div>
+  <div class="hof-grid" id="hofGrid"></div>
+</section>
+
+
+<!-- ═══ 6. TIER ═══ -->
+<section class="section" id="tier">
+  <div class="sec-title">Tier Classification</div>
+  <div class="sec-sub">Sistem klasifikasi turnamen ASB Foundation</div>
+  <div class="compare-toggle">
+    <button class="ctbtn on" data-sys="new">Sistem Baru — ELITECL4SS</button>
+    <button class="ctbtn" data-sys="old">Sistem Lama — ASB</button>
+  </div>
+  <div id="sysNew">
+    <div class="tier-grid">
+      <div class="tier-card"><div class="tlabel tB">B</div><div class="tdesc"><strong>Lokal</strong> — 1 kabupaten / 1 daerah. Tidak ada syarat prizepool minimum.</div></div>
+      <div class="tier-card"><div class="tlabel tBP">B+</div><div class="tdesc"><strong>Regional Kecil</strong> — Ada player dari kabupaten lain. Prizepool minimum <strong>5+</strong>.</div></div>
+      <div class="tier-card"><div class="tlabel tA">A</div><div class="tdesc"><strong>Tier Atas</strong> — Player dari kabupaten lain. Min. <strong>5 player</strong> atau <strong>8 player</strong>. Prizepool <strong>10+</strong>.</div></div>
+      <div class="tier-card"><div class="tlabel tS">S</div><div class="tdesc"><strong>Premier</strong> — Prizepool <strong>25+</strong>. Player dari kabupaten lain. Min. <strong>5 atau 8 player</strong>.</div></div>
+    </div>
+  </div>
+  <div id="sysOld" style="display:none">
+    <div class="tier-grid">
+      <div class="tier-card"><div class="tlabel tB">B</div><div class="tdesc"><strong>Lokal Kelas</strong> — Turnamen dalam satu kelas.</div></div>
+      <div class="tier-card"><div class="tlabel tBP">B+</div><div class="tdesc"><strong>Antar Kelas/Sekolah</strong> — Ada player dari kelas atau sekolah lain.</div></div>
+      <div class="tier-card"><div class="tlabel tA">A</div><div class="tdesc"><strong>Worlds</strong> — Format Worlds. Player dari kelas/sekolah lain + prizepool.</div></div>
+      <div class="tier-card inactive"><div class="tlabel tS">S</div><div class="tdesc"><strong>Tidak Ada</strong> — Tier S tidak digunakan dalam sistem lama ASB.</div></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="legend-box">
+    <b style="color:var(--t2)">Perbedaan :</b> Sistem Lama → unit <b style="color:var(--t1)">Kelas/Sekolah</b> | Sistem Baru → unit <b style="color:var(--t1)">Kabupaten/Daerah</b>
+  </div>
+</section>
+
+
+<!-- ═══ 7. TIMELINE ═══ -->
+<section class="section" id="timeline">
+  <div class="sec-title">Timeline</div>
+  <div class="sec-sub">Kronologi semua turnamen dari awal hingga sekarang</div>
+  <div class="season-track">
+    <div class="st-title">Progress Season <span class="sorg">ELITECL4SS</span></div>
+    <div class="strack" id="seasonTrack"></div>
+  </div>
+  <div class="timeline" id="timelineList"></div>
+</section>
+
+
+<!-- ═══ 8. ADMIN ═══ -->
+<section class="section" id="admin">
+  <div class="sec-title">Admin Dashboard</div>
+  <div class="sec-sub">Kelola database turnamen & player</div>
+  <div id="adminContent"></div>
+</section>
+
+
+<!-- AUTH SECTION -->
+<section class="section" id="auth">
+  <div class="auth-wrap">
+    <div class="auth-card" id="loginCard">
+      <div class="auth-title">LOGIN</div>
+      <div class="auth-sub">Masuk ke akun ASB Foundation kamu</div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input class="form-input" id="loginUser" type="text" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="loginPass" type="password" placeholder="Password">
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:4px" onclick="doLogin()">Masuk</button>
+      <div style="text-align:center;margin-top:10px">
+        <span style="font-size:9px;color:#3a5570;letter-spacing:1px">Tidak bisa login? &nbsp;</span>
+        <span onclick="forceResetLogin()" style="font-size:9px;color:#4d9fff;cursor:pointer;text-decoration:underline;letter-spacing:1px">Reset Data Login</span>
+      </div>
+      <div class="auth-switch">Belum punya akun? <a onclick="showAuthForm('signup')">Sign Up</a></div>
+    </div>
+    <div class="auth-card" id="signupCard" style="display:none">
+      <div class="auth-title">SIGN UP</div>
+      <div class="auth-sub">Buat akun ASB Foundation baru</div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input class="form-input" id="signupUser" type="text" placeholder="Username (min 3 karakter)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="signupPass" type="password" placeholder="Password (min 6 karakter)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Konfirmasi Password</label>
+        <input class="form-input" id="signupPass2" type="password" placeholder="Ulangi password">
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:4px" onclick="doSignup()">Daftar</button>
+      <div class="auth-switch">Sudah punya akun? <a onclick="showAuthForm('login')">Login</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- OVERLAY MODAL -->
+<div id="overlay" onclick="handleOverlayClick(event)">
+  <div id="modal">
+    <button class="m-close" onclick="closeModal()">&times;</button>
+    <div id="mContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarChange(event)">
+
+<footer>&copy; 2026 <b>ASB Foundation</b> &nbsp;&#183;&nbsp; Free Fire Esports Archive</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATABASE - localStorage sebagai persistent store
+   ═══════════════════════════════════════════════════ */
+
+/* ═══ SUPABASE CONFIG ═══ */
+var SUPA_URL='https://xiwiqfppzfhlydgqbtbv.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpd2lxZnBwemZobHlkZ3FidGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNDczNjIsImV4cCI6MjA4NzkyMzM2Mn0.uMUxU6XYR0eZWBfT62UQojqUHcU9ydpEh_s3SZq_Tsg';
+
+/* ═══ SUPABASE API HELPER ═══ */
+var SB = {
+  _h: function(){ return {'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}; },
+
+  // GET rows: SB.from('users').select('*').eq('username','ray').run(cb)
+  from: function(table){
+    var base=SUPA_URL+'/rest/v1/'+table;
+    var params=[]; var body=null; var method='GET';
+    var obj={
+      select: function(cols){ params.push('select='+(cols||'*')); return obj; },
+      eq: function(col,val){ params.push(col+'=eq.'+encodeURIComponent(val)); return obj; },
+      neq: function(col,val){ params.push(col+'=neq.'+encodeURIComponent(val)); return obj; },
+      order: function(col,desc){ params.push('order='+col+(desc?'.desc':'.asc')); return obj; },
+      limit: function(n){ params.push('limit='+n); return obj; },
+      insert: function(data){ method='POST'; body=JSON.stringify(data); return obj; },
+      upsert: function(data){ method='POST'; body=JSON.stringify(data); params.push('on_conflict=id'); return obj; },
+      update: function(data){ method='PATCH'; body=JSON.stringify(data); return obj; },
+      delete: function(){ method='DELETE'; return obj; },
+      run: function(cb){
+        var url=base+(params.length?'?'+params.join('&'):'');
+        var hdrs=SB._h();
+        if(method==='POST'&&obj._upsert) hdrs['Prefer']='resolution=merge-duplicates,return=representation';
+        else if(method==='POST') hdrs['Prefer']='return=representation';
+        else if(method==='PATCH'||method==='DELETE') hdrs['Prefer']='return=representation';
+        fetch(url,{method:method,headers:hdrs,body:body})
+          .then(function(r){return r.json();})
+          .then(function(d){ cb(null,d); })
+          .catch(function(e){ cb(e,null); });
+      }
+    };
+    return obj;
+  },
+
+  // Realtime subscribe
+  channel: null,
+  subscribe: function(table, cb){
+    // Polling setiap 3 detik sebagai pengganti realtime (lebih compatible)
+    return setInterval(cb, 3000);
+  }
+};
+
+/* ═══ DB (localStorage untuk data lokal non-backend) ═══ */
+/* ═══ SUPABASE CONFIG ═══ */
+var SUPA_URL='https://xiwiqfppzfhlydgqbtbv.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpd2lxZnBwemZobHlkZ3FidGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNDczNjIsImV4cCI6MjA4NzkyMzM2Mn0.uMUxU6XYR0eZWBfT62UQojqUHcU9ydpEh_s3SZq_Tsg';
+
+/* ═══ SUPABASE REST API HELPER ═══ */
+var SB={
+  _h:function(){return{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};},
+  from:function(table){
+    var url=SUPA_URL+'/rest/v1/'+table;
+    var qs=[]; var body=null; var method='GET'; var pref='';
+    var o={
+      select:function(c){qs.push('select='+(c||'*'));return o;},
+      eq:function(c,v){qs.push(c+'=eq.'+encodeURIComponent(v));return o;},
+      order:function(c,d){qs.push('order='+c+(d?'.desc':'.asc'));return o;},
+      limit:function(n){qs.push('limit='+n);return o;},
+      insert:function(d){method='POST';body=JSON.stringify(d);pref='return=representation';return o;},
+      update:function(d){method='PATCH';body=JSON.stringify(d);pref='return=representation';return o;},
+      upsert:function(d){method='POST';body=JSON.stringify(d);pref='resolution=merge-duplicates,return=representation';qs.push('on_conflict=id');return o;},
+      del:function(){method='DELETE';pref='return=representation';return o;},
+      run:function(cb){
+        var full=url+(qs.length?'?'+qs.join('&'):'');
+        var h=SB._h(); if(pref)h['Prefer']=pref;
+        fetch(full,{method:method,headers:h,body:body})
+          .then(function(r){
+            if(r.status===204)return [];
+            return r.json();
+          })
+          .then(function(d){cb(null,d);})
+          .catch(function(e){cb(e,null);});
+      }
+    };
+    return o;
+  }
+};
+
+/* ═══ DB (localStorage untuk data non-backend: turnamen, player) ═══ */
+var DB={
+  get:function(key){try{var v=localStorage.getItem('asb_'+key);return v?JSON.parse(v):null;}catch(e){return null}},
+  set:function(key,val){try{localStorage.setItem('asb_'+key,JSON.stringify(val));}catch(e){}},
+  init:function(){
+    if(!this.get('tournaments'))this.set('tournaments',DEFAULT_TOURNAMENTS);
+    if(!this.get('players'))this.set('players',DEFAULT_PLAYERS);
+  }
+};
+
+/* ═══ DEFAULT DATA ═══ */
+var DEFAULT_TOURNAMENTS = [
+  {id:'t1',name:'ACL S1',year:'2024/2025',tier:'B',org:'ASB',status:'completed',champ:'Ryan',runner:'Dika',is2v2:false},
+  {id:'t2',name:'A-Worlds',year:'2024/2025',tier:'A',org:'ASB',status:'completed',champ:'Ryan',runner:'Yoga',is2v2:false},
+  {id:'t3',name:'ACL S2',year:'2025/2026',tier:'B',org:'ASB',status:'completed',champ:'Fardhan',runner:'Ryan',is2v2:false},
+  {id:'t4',name:'FFS6',year:'2025/2026',tier:'B',org:'APLS1',status:'completed',champ:'Ryan',runner:'Yoga',is2v2:false},
+  {id:'t5',name:'FFE2',year:'2025/2026',tier:'B',org:'APLS1',status:'canceled',champ:'',runner:'',is2v2:false},
+  {id:'t6',name:'EC4 S1',year:'2026/2027',tier:'B',org:'ELITECL4SS',status:'completed',champ:'Dika',runner:'Ryan',is2v2:false},
+  {id:'t7',name:'ER3 S2',year:'2026/2027',tier:'B+',org:'ELITECL4SS',status:'completed',champ:'Ryan',runner:'Grezly',is2v2:false},
+  {id:'t8',name:'DQ1 S3',year:'2026/2027',tier:'B+',org:'ELITECL4SS',status:'completed',champ:'Radit & Vander',runner:'Rasid & Rafael',is2v2:true},
+  {id:'t9',name:'DYL S4',year:'2026/2027',tier:'B',org:'ELITECL4SS',status:'canceled',champ:'',runner:'',is2v2:false},
+  {id:'t10',name:'EWL S5',year:'2026/2027',tier:'B+',org:'ELITECL4SS',status:'completed',champ:'Farealz',runner:'Grezly',is2v2:false},
+  {id:'t11',name:'HX F1',year:'2026/2027',tier:'A',org:'ELITECL4SS',status:'upcoming',champ:'',runner:'',is2v2:false},
+];
+var DEFAULT_PLAYERS = [
+  {id:'p1',name:'Ryan',champ:4,runner:2,best:'A'},
+  {id:'p2',name:'Dika',champ:1,runner:1,best:'B'},
+  {id:'p3',name:'Fardhan',champ:1,runner:0,best:'B'},
+  {id:'p4',name:'Radit & Vander',champ:1,runner:0,best:'B+',team:true},
+  {id:'p5',name:'Farealz',champ:1,runner:0,best:'B+'},
+  {id:'p6',name:'Yoga',champ:0,runner:2,best:'A'},
+  {id:'p7',name:'Grezly',champ:0,runner:2,best:'B+'},
+  {id:'p8',name:'Rasid & Rafael',champ:0,runner:1,best:'B+',team:true},
+];
+
+/* ═══ STATIC ACHIEV DATA (computed from tournaments) ═══ */
+var PLAYER_ACHIEV = {
+  'Ryan':[
+    {t:'c',tier:'B',tourn:'ACL S1 2024/2025',org:'ASB'},
+    {t:'c',tier:'A',tourn:'A-Worlds 2024/2025',org:'ASB'},
+    {t:'c',tier:'B',tourn:'FFS6 2025/2026',org:'APLS1'},
+    {t:'c',tier:'B+',tourn:'ER3 S2 2026/2027',org:'ELITECL4SS'},
+    {t:'r',tier:'B',tourn:'ACL S2 2025/2026',org:'ASB'},
+    {t:'r',tier:'B',tourn:'EC4 S1 2026/2027',org:'ELITECL4SS'},
+  ],
+  'Dika':[{t:'c',tier:'B',tourn:'EC4 S1 2026/2027',org:'ELITECL4SS'},{t:'r',tier:'B',tourn:'ACL S1 2024/2025',org:'ASB'}],
+  'Fardhan':[{t:'c',tier:'B',tourn:'ACL S2 2025/2026',org:'ASB'}],
+  'Radit & Vander':[{t:'c',tier:'B+',tourn:'DQ1 S3 2026/2027',org:'ELITECL4SS'}],
+  'Farealz':[{t:'c',tier:'B+',tourn:'EWL S5 2026/2027',org:'ELITECL4SS'}],
+  'Yoga':[{t:'r',tier:'A',tourn:'A-Worlds 2024/2025',org:'ASB'},{t:'r',tier:'B',tourn:'FFS6 2025/2026',org:'APLS1'}],
+  'Grezly':[{t:'r',tier:'B+',tourn:'ER3 S2 2026/2027',org:'ELITECL4SS'},{t:'r',tier:'B+',tourn:'EWL S5 2026/2027',org:'ELITECL4SS'}],
+  'Rasid & Rafael':[{t:'r',tier:'B+',tourn:'DQ1 S3 2026/2027',org:'ELITECL4SS'}],
+};
+
+var TC={'B':'tbadge tb','B+':'tbadge tbp','A':'tbadge ta','S':'tbadge ts'};
+var PRED_CANDIDATES=['Ryan','Dika','Fardhan','Farealz','Grezly','Yoga']; // fallback
+function getPredConfig(){
+  var cfg=DB.get('voteConfig');
+  if(!cfg) cfg={title:'Prediksi HX F1 - Tier A',sub:'Siapa yang bakal juara? Vote sekarang!',candidates:PRED_CANDIDATES.slice()};
+  return cfg;
+}
+function savePredConfig(cfg){ DB.set('voteConfig',cfg); }
+var currentUser=null;
+var voteInterval=null;
+
+/* ═══════════════════════════════════════════════════
+   STARFIELD
+   ═══════════════════════════════════════════════════ */
+(function(){
+  var c=document.getElementById('sc'),ctx=c.getContext('2d'),s=[];
+  function rsz(){c.width=innerWidth;c.height=innerHeight;c.style.width='100%';c.style.height='100%'}rsz();onresize=rsz;
+  for(var i=0;i<80;i++) s.push({x:Math.random(),y:Math.random(),r:Math.random()*.7+.2,
+    o:Math.random()*.4+.1,sp:Math.random()*.0003+.0001,
+    col:['#4d9fff77','#ffffff44','#e0263e33','#a070ff33'][0|Math.random()*4]});
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    s.forEach(function(p){
+      p.o+=p.sp*(Math.random()>.5?1:-1);p.o=Math.max(.05,Math.min(.65,p.o));
+      ctx.beginPath();ctx.arc(p.x*c.width,p.y*c.height,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col;ctx.globalAlpha=p.o;ctx.fill();
+    });ctx.globalAlpha=1;requestAnimationFrame(draw);
+  })();
+})();
+
+/* ═══════════════════════════════════════════════════
+   AUTH SYSTEM
+   ═══════════════════════════════════════════════════ */
+function doLogin(){
+  var u=document.getElementById('loginUser').value.trim();
+  var p=document.getElementById('loginPass').value.trim();
+  if(!u||!p){showToast('Username dan password harus diisi','error');return;}
+  showToast('Memverifikasi...','info');
+  SB.from('users').select('*').eq('username',u).run(function(err,data){
+    if(err||!data||data.length===0){showToast('Username atau password salah','error');return;}
+    var found=data[0];
+    if(found.password!==p){showToast('Username atau password salah','error');return;}
+    currentUser=found;
+    try{localStorage.setItem('asb_session',JSON.stringify(found));}catch(e){}
+    onLoginSuccess();
+    sbLogActivity('login','User '+found.username+' login');
+  });
+}
+function doSignup(){
+  var u=document.getElementById('signupUser').value.trim();
+  var p=document.getElementById('signupPass').value;
+  var p2=document.getElementById('signupPass2').value;
+  if(u.length<3){showToast('Username minimal 3 karakter','error');return;}
+  if(p.length<6){showToast('Password minimal 6 karakter','error');return;}
+  if(p!==p2){showToast('Password tidak cocok','error');return;}
+  showToast('Membuat akun...','info');
+  // Cek dulu apakah username sudah ada
+  SB.from('users').select('username').eq('username',u).run(function(err,data){
+    if(data&&data.length>0){showToast('Username sudah dipakai','error');return;}
+    SB.from('users').insert({username:u,password:p,role:'member',avatar:''}).run(function(e2,d2){
+      if(e2||!d2||d2.error){showToast('Gagal membuat akun. Coba lagi.','error');return;}
+      sbLogActivity('signup','Akun baru: '+u);
+      showToast('Akun berhasil dibuat! Silakan login','success');
+      showAuthForm('login');
+    });
+  });
+}
+function logout(){
+  currentUser=null;
+  try{localStorage.removeItem('asb_session')}catch(e){}
+  updateProfileUI();
+  navTo('organizer');
+  document.getElementById('adminNavBtn').style.display='none';
+  closeDropdown();
+  showToast('Berhasil logout','info');
+}
+function onLoginSuccess(){
+  updateProfileUI();
+  closeDropdown();
+  if(currentUser.role==='admin') document.getElementById('adminNavBtn').style.display='flex';
+  navTo('organizer');
+  logActivity('login','User '+currentUser.username+' login');
+  showToast('Selamat datang, '+currentUser.username+'!','success');
+}
+function updateProfileUI(){
+  var av=document.getElementById('profileAvatar');
+  var img=document.getElementById('avatarImg');
+  var init=document.getElementById('avatarInitial');
+  var logoutBtn=document.getElementById('logoutBtn');
+  var dd=document.getElementById('profileDropdown');
+  var editItem=dd.querySelector('.pd-item:nth-child(1)');
+  var avatarItem=dd.querySelector('.pd-item:nth-child(2)');
+  var sep=dd.querySelector('.pd-sep');
+  var loginItem=dd.querySelector('.pd-item:nth-child(4)');
+  var signupItem=dd.querySelector('.pd-item:nth-child(5)');
+  if(currentUser){
+    if(currentUser.avatar){img.src=currentUser.avatar;img.style.display='block';init.style.display='none';}
+    else{img.style.display='none';init.style.display='block';init.textContent=currentUser.username[0].toUpperCase();}
+    logoutBtn.style.display='flex';
+    editItem.style.display='flex';avatarItem.style.display='flex';
+    loginItem.style.display='none';signupItem.style.display='none';
+  } else {
+    img.style.display='none';init.style.display='block';init.textContent='?';
+    logoutBtn.style.display='none';
+    editItem.style.display='none';avatarItem.style.display='none';
+    loginItem.style.display='flex';signupItem.style.display='flex';
+  }
+}
+function showAuthForm(type){
+  closeDropdown();
+  document.getElementById('loginCard').style.display=type==='login'?'block':'none';
+  document.getElementById('signupCard').style.display=type==='signup'?'block':'none';
+  navTo('auth');
+}
+function toggleDropdown(){
+  document.getElementById('profileDropdown').classList.toggle('open');
+}
+function closeDropdown(){
+  document.getElementById('profileDropdown').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  if(!document.getElementById('profileArea').contains(e.target)) closeDropdown();
+});
+
+function openProfileModal(){
+  if(!currentUser){showAuthForm('login');return;}
+  closeDropdown();
+  ppBuild();
+  var el=document.getElementById('profPage');
+  el.style.display='block';
+  el.scrollTop=0;
+}
+function ppClose(){
+  document.getElementById('profPage').style.display='none';
+}
+function ppBuild(){
+  var users=DB.get('users')||[];
+  var u=users.find(function(x){return x.username===currentUser.username;})||currentUser;
+  var isAdmin=(u.role==='admin');
+  var rc=isAdmin?'#f5c842':'#4d9fff';
+  var rbg=isAdmin?'linear-gradient(135deg,#3a2a00,#1a1200)':'linear-gradient(135deg,#001a3a,#000d1a)';
+  var rl=isAdmin?'&#11088; Admin':'&#128100; Member';
+  var ts=sbGetT();
+  var cc=0,rc2=0;
+  ts.forEach(function(t){if(t.status!=='completed')return;if(t.champ===u.username)cc++;if(t.runner===u.username)rc2++;});
+  var votes=DB.get('votes')||{};
+  var mv=votes['user_'+u.username]||'';
+  var body=document.getElementById('ppBody');
+  body.innerHTML='';
+
+  var hero=document.createElement('div'); hero.className='pp-hero';
+  var av=document.createElement('div'); av.className='pp-av'; av.id='ppAv';
+  av.onclick=function(){document.getElementById('ppFile').click();};
+  if(u.avatar){var img=document.createElement('img');img.src=u.avatar;av.appendChild(img);}
+  else{av.textContent=u.username[0].toUpperCase();}
+  var cam=document.createElement('div');cam.className='pp-cam';cam.innerHTML='&#128247;';av.appendChild(cam);
+  hero.appendChild(av);
+  var fi=document.createElement('input');fi.type='file';fi.id='ppFile';fi.accept='image/*';fi.style.display='none';fi.onchange=ppHandleAvatar;hero.appendChild(fi);
+  var hint=document.createElement('div');hint.className='pp-hint';hint.textContent='Tap foto untuk ganti';hero.appendChild(hint);
+  var nm=document.createElement('div');nm.className='pp-name';nm.textContent=u.username;hero.appendChild(nm);
+  var rb=document.createElement('div');rb.className='pp-role';rb.style.cssText='background:'+rbg+';color:'+rc+';border:1px solid '+rc+'44';rb.innerHTML=rl;hero.appendChild(rb);
+  var sr=document.createElement('div');sr.className='pp-stats';
+  function mkS(v,l,c){var b=document.createElement('div');b.className='pp-sbox';var n=document.createElement('div');n.className='pp-sn';n.style.color=c;n.textContent=v;var lb=document.createElement('div');lb.className='pp-sl';lb.textContent=l;b.appendChild(n);b.appendChild(lb);sr.appendChild(b);}
+  mkS(cc,'Champion','#f5c842');mkS(rc2,'Runner-up','#e07040');
+  if(mv)mkS(mv,'Vote','#4d9fff');
+  hero.appendChild(sr);body.appendChild(hero);
+
+  var bd=document.createElement('div');bd.className='pp-body';
+  var c1=document.createElement('div');c1.className='pp-card';
+  c1.innerHTML='<div class="pp-card-hdr"><span style="font-size:15px">&#128100;</span><span class="pp-card-title">Ganti Username</span></div>'
+    +'<div class="form-group"><label class="form-label">Username Baru</label><input class="form-input" id="ppUname" type="text" autocomplete="off" placeholder="Min 3 karakter"></div>'
+    +'<div class="form-group"><label class="form-label">Konfirmasi Password</label><input class="form-input" id="ppUnameP" type="password" placeholder="Password kamu sekarang"></div>'
+    +'<button class="btn-primary" style="width:100%;padding:10px;font-size:12px" onclick="ppSaveUname()">&#10003; Simpan Username</button>'
+    +'<div class="pp-msg" id="ppMsgU"></div>';
+  bd.appendChild(c1);
+  var c2=document.createElement('div');c2.className='pp-card';
+  c2.innerHTML='<div class="pp-card-hdr"><span style="font-size:15px">&#128274;</span><span class="pp-card-title">Ganti Password</span></div>'
+    +'<div class="form-group"><label class="form-label">Password Lama</label><input class="form-input" id="ppOldP" type="password" placeholder="Password sekarang"></div>'
+    +'<div class="form-group"><label class="form-label">Password Baru</label><input class="form-input" id="ppNewP" type="password" placeholder="Min 6 karakter"></div>'
+    +'<div class="form-group"><label class="form-label">Konfirmasi Password Baru</label><input class="form-input" id="ppNewP2" type="password" placeholder="Ulangi password baru"></div>'
+    +'<button class="btn-primary" style="width:100%;padding:10px;font-size:12px" onclick="ppSavePass()">&#10003; Simpan Password</button>'
+    +'<div class="pp-msg" id="ppMsgP"></div>';
+  bd.appendChild(c2);
+  body.appendChild(bd);
+}
+function ppMsg(id,txt,type){var el=document.getElementById(id);if(!el)return;el.textContent=txt;el.className='pp-msg show '+type;setTimeout(function(){el.className='pp-msg';},3500);}
+function ppHandleAvatar(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    var d=ev.target.result;
+    SB.from('users').eq('username',currentUser.username).update({avatar:d}).run(function(){});
+    currentUser.avatar=d;try{localStorage.setItem('asb_session',JSON.stringify(currentUser));}catch(er){}
+    var av=document.getElementById('ppAv');
+    if(av){av.innerHTML='';var img=document.createElement('img');img.src=d;av.appendChild(img);var cam=document.createElement('div');cam.className='pp-cam';cam.innerHTML='&#128247;';av.appendChild(cam);}
+    updateProfileUI();showToast('Foto profil berhasil diubah!','success');
+  };
+  r.readAsDataURL(f);
+}
+function ppSaveUname(){
+  var nu=document.getElementById('ppUname').value.trim();
+  var pw=document.getElementById('ppUnameP').value.trim();
+  if(nu.length<3){ppMsg('ppMsgU','Username minimal 3 karakter','err');return;}
+  if(!pw){ppMsg('ppMsgU','Password harus diisi','err');return;}
+  if(currentUser.password!==pw){ppMsg('ppMsgU','Password salah','err');return;}
+  SB.from('users').select('username').eq('username',nu).run(function(e,d){
+    if(d&&d.length>0&&d[0].username!==currentUser.username){ppMsg('ppMsgU','Username sudah dipakai','err');return;}
+    SB.from('users').eq('username',currentUser.username).update({username:nu}).run(function(e2){
+      if(e2){ppMsg('ppMsgU','Gagal update username','err');return;}
+      currentUser.username=nu;
+      try{localStorage.setItem('asb_session',JSON.stringify(currentUser));}catch(e3){}
+      updateProfileUI();ppMsg('ppMsgU','Username berhasil diubah ke: '+nu,'ok');
+      setTimeout(ppBuild,2000);
+    });
+  });
+}
+function ppSavePass(){
+  var op=document.getElementById('ppOldP').value.trim();
+  var np=document.getElementById('ppNewP').value.trim();
+  var np2=document.getElementById('ppNewP2').value.trim();
+  if(!op){ppMsg('ppMsgP','Password lama harus diisi','err');return;}
+  if(np.length<6){ppMsg('ppMsgP','Password baru minimal 6 karakter','err');return;}
+  if(np!==np2){ppMsg('ppMsgP','Konfirmasi tidak cocok','err');return;}
+  if(currentUser.password!==op){ppMsg('ppMsgP','Password lama salah','err');return;}
+  SB.from('users').eq('username',currentUser.username).update({password:np}).run(function(e){
+    if(e){ppMsg('ppMsgP','Gagal update password','err');return;}
+    currentUser.password=np;
+    try{localStorage.setItem('asb_session',JSON.stringify(currentUser));}catch(e2){}
+    document.getElementById('ppOldP').value='';document.getElementById('ppNewP').value='';document.getElementById('ppNewP2').value='';
+    ppMsg('ppMsgP','Password berhasil diubah!','ok');
+  });
+}
+function changeAvatar(){if(document.getElementById('ppFile'))document.getElementById('ppFile').click();}
+function handleAvatarChange(e){ppHandleAvatar(e);}
+
+
+/* ═══════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════ */
+function navTo(target){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active')});
+  var sec=document.getElementById(target);if(sec)sec.classList.add('active');
+  var btn=document.querySelector('.nav-btn[data-target="'+target+'"]');if(btn)btn.classList.add('active');
+  if(target==='stats'){setTimeout(function(){renderCharts();},60)}
+  if(target==='hof'){renderHallOfFame();}
+  if(target==='admin'){renderAdminPanel();}
+}
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ═══════════════════════════════════════════════════
+   ORGANIZER RENDER
+   ═══════════════════════════════════════════════════ */
+function getTierClass(tier){
+  return tier==='B'?'tb':tier==='B+'?'tbp':tier==='A'?'ta':tier==='S'?'ts':'tb';
+}
+function renderOrganizer(){
+  var tournaments=sbGetT();
+  var orgs={};
+  tournaments.forEach(function(t){
+    if(!orgs[t.org])orgs[t.org]=[];
+    orgs[t.org].push(t);
+  });
+  var html='';
+  Object.keys(orgs).forEach(function(org){
+    var ts=orgs[org];
+    var isActive=org==='ELITECL4SS';
+    html+='<div class="org-block">';
+    html+='<div class="org-hdr"><span class="org-tag">Organizer</span><span class="org-name">'+org+'</span>';
+    html+='<span class="org-count">'+ts.length+' turnamen</span>';
+    if(org==='ASB')html+='<span class="org-badge" style="background:linear-gradient(135deg,var(--blue),var(--purple))">Original</span>';
+    if(isActive)html+='<span class="org-badge" style="background:linear-gradient(135deg,var(--red),var(--purple))">Active</span>';
+    html+='</div>';
+    ts.forEach(function(t){
+      var isCancel=t.status==='canceled',isUpcoming=t.status==='upcoming';
+      var tierBadge=isCancel||isUpcoming?'':' <span class="tbadge '+getTierClass(t.tier)+'">'+t.tier+'</span>';
+      var is2v2Badge=t.is2v2?' <span class="tag2v2">2v2</span>':'';
+      html+='<div class="tr" data-tier="'+(isCancel?'canceled':t.tier)+'" data-txt="'+t.name.toLowerCase()+' '+t.org.toLowerCase()+' '+(t.champ||'').toLowerCase()+' '+(t.runner||'').toLowerCase()+'">';
+      html+='<div class="tr-name">'+t.name+' '+t.year+tierBadge+is2v2Badge+'</div>';
+      if(isCancel) html+='<div class="tr-status ct">Canceled</div><div class="tr-players"><span class="chip ccancel">&#8212; Canceled</span></div>';
+      else if(isUpcoming) html+='<div class="tr-status ut">Upcoming</div><div class="tr-players"><span class="chip ccoming">&#9675; Coming Soon</span></div>';
+      else html+='<div class="tr-status">Completed</div><div class="tr-players"><span class="chip cchamp"><span class="ic">&#9733;</span>'+t.champ+'</span><span class="chip crunner"><span class="ir">&#9650;</span>'+t.runner+'</span></div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  document.getElementById('orgContainer').innerHTML=html;
+}
+
+/* ═══════════════════════════════════════════════════
+   ACHIEVEMENT RENDER
+   ═══════════════════════════════════════════════════ */
+function getWinRate(c,r){return (c+r)===0?0:Math.round(c/(c+r)*100)}
+function getBtClass(bt){return bt==='A'?'btA':bt==='B+'?'btBP':'btB'}
+
+function renderAchievement(){
+  var players=sbGetP();
+  var tournaments=sbGetT();
+  // Build dynamic achievement map from DB tournaments
+  var dynAchiev={};
+  tournaments.forEach(function(t){
+    if(t.status!=='completed')return;
+    if(t.champ){
+      if(!dynAchiev[t.champ])dynAchiev[t.champ]=[];
+      dynAchiev[t.champ].push({t:'c',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});
+    }
+    if(t.runner){
+      if(!dynAchiev[t.runner])dynAchiev[t.runner]=[];
+      dynAchiev[t.runner].push({t:'r',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});
+    }
+  });
+  // Compute live champ/runner from dynAchiev (tournament-based), not player DB fields
+  players.forEach(function(p){
+    var ach=dynAchiev[p.name]||[];
+    p._lc=ach.filter(function(a){return a.t==='c'}).length;
+    p._lr=ach.filter(function(a){return a.t==='r'}).length;
+  });
+  players.sort(function(a,b){
+    var sa=a._lc*10+a._lr,sb=b._lc*10+b._lr;
+    if(sb!==sa)return sb-sa;
+    return getWinRate(b._lc,b._lr)-getWinRate(a._lc,a._lr);
+  });
+  // Featured
+  var top=players[0];
+  if(top){
+    var fi=document.getElementById('featuredInfo');
+    fi.innerHTML='<div class="fc-label">Most Dominant Player</div>'
+      +'<div class="fc-name">'+top.name+'</div>'
+      +'<div class="fc-stat">'+top._lc+'&#215; Champion &nbsp;&#183;&nbsp; '+top._lr+'&#215; Runner-up</div>'
+      +'<div class="fc-chips"><span class="tbadge '+getTierClass(top.best)+'">Best: '+top.best+'</span></div>';
+  }
+  // Board
+  var html='';
+  var ranks=[1];
+  players.forEach(function(p,i){
+    if(i>0){
+      var prev=players[i-1],ps=prev._lc*10+prev._lr,cs=p._lc*10+p._lr;
+      ranks.push(ps===cs?ranks[i-1]:i+1);
+    }
+    var wr=getWinRate(p._lc,p._lr);
+    var achiev=dynAchiev[p.name]||[];
+    var rankClass=ranks[i]===1?'rank1':ranks[i]===2?'rank2':ranks[i]===3?'rank3':'';
+    html+='<div class="prow" data-player="'+p.name+'">';
+    html+='<div class="prank '+rankClass+'">'+ranks[i]+'</div>';
+    html+='<div class="pinfo">';
+    html+='<div class="pname">'+p.name+(p.team?' <span style="font-size:7px;color:var(--t3);font-weight:400">Tim 2v2</span>':'')+'</div>';
+    html+='<div class="psumm">'+p._lc+'&#215; Champion &nbsp;&#183;&nbsp; '+p._lr+'&#215; Runner-up</div>';
+    html+='<div class="alist">';
+    achiev.forEach(function(a){
+      var isC=a.t==='c';
+      html+='<div class="aitem"><span class="alabel '+(isC?'lc':'lr')+'">'+(isC?'&#9733; Champion':'&#9650; Runner-up')+'</span><span class="tbadge '+getTierClass(a.tier)+'">'+a.tier+'</span><span class="atourn">'+a.tourn+'</span></div>';
+    });
+    html+='</div>';
+    html+='<div class="wrrow"><span class="wrl">Win Rate</span><div class="wrt"><div class="wrf" style="width:'+wr+'%"></div></div><span class="wrp">'+wr+'%</span></div>';
+    html+='</div>';
+    html+='<div class="btbadge '+getBtClass(p.best)+'">Best: '+p.best+'</div>';
+    html+='</div>';
+  });
+  document.getElementById('lboard').innerHTML=html;
+  document.querySelectorAll('.prow[data-player]').forEach(function(r){
+    r.addEventListener('click',function(){openPlayerModal(r.dataset.player)});
+  });
+  document.getElementById('achSearch').addEventListener('input',function(){
+    var q=this.value.toLowerCase();
+    document.querySelectorAll('.prow[data-player]').forEach(function(r){
+      r.classList.toggle('ach-hidden',q!==''&&r.dataset.player.toLowerCase().indexOf(q)===-1);
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   PLAYER MODAL
+   ═══════════════════════════════════════════════════ */
+function openPlayerModal(name){
+  var players=sbGetP();
+  var tournaments=sbGetT();
+  var dynAchiev={};
+  tournaments.forEach(function(t){
+    if(t.status!=='completed')return;
+    if(t.champ){if(!dynAchiev[t.champ])dynAchiev[t.champ]=[];dynAchiev[t.champ].push({t:'c',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});}
+    if(t.runner){if(!dynAchiev[t.runner])dynAchiev[t.runner]=[];dynAchiev[t.runner].push({t:'r',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});}
+  });
+  var p=players.find(function(x){return x.name===name});
+  if(!p)return;
+  var achiev=dynAchiev[name]||[];
+  var liveChamp=achiev.filter(function(a){return a.t==='c'}).length;
+  var liveRunner=achiev.filter(function(a){return a.t==='r'}).length;
+  var wr=getWinRate(liveChamp,liveRunner);
+  var h='<div class="m-name">'+name+(p.team?' <span style="font-size:8px;color:var(--t3);font-weight:400">Tim 2v2</span>':'')+'</div>';
+  h+='<div class="m-stats">';
+  if(liveChamp>0)h+='<div class="ms"><div class="ms-n" style="color:var(--gold)">'+liveChamp+'</div><div class="ms-l">Champ</div></div>';
+  if(liveRunner>0)h+='<div class="ms"><div class="ms-n" style="color:var(--orange)">'+liveRunner+'</div><div class="ms-l">Runner</div></div>';
+  h+='<div class="ms"><div class="ms-n" style="color:var(--blue2)">'+wr+'%</div><div class="ms-l">Win Rate</div></div>';
+  h+='<div class="ms"><div class="ms-n" style="color:#a070ff">'+p.best+'</div><div class="ms-l">Best</div></div>';
+  h+='</div>';
+  if(achiev.length>0){
+    h+='<div class="m-sec">Riwayat Prestasi</div>';
+    achiev.forEach(function(a){
+      var isC=a.t==='c';
+      h+='<div class="m-row"><span style="font-size:9px;font-weight:700;min-width:58px;color:'+(isC?'var(--gold)':'var(--orange)')+'">'+
+         (isC?'&#9733; Champ':'&#9650; Runner')+'</span>';
+      h+='<span class="'+getTierClass(a.tier)+' tbadge">'+a.tier+'</span>';
+      h+='<span style="font-size:10px;color:var(--t2);flex:1">'+a.tourn+'</span>';
+      h+='<span style="font-size:8px;color:var(--t3)">'+a.org+'</span></div>';
+    });
+  }
+  h+='<div class="m-sec">Aksi Cepat</div>';
+  h+='<button onclick="goH2H(\''+name.replace(/'/g,"\\'")+'\')" style="width:100%;padding:8px;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:7px;color:#fff;font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase">&#9876; Lihat H2H '+name+'</button>';
+  openModal(h);
+}
+
+/* ═══════════════════════════════════════════════════
+   H2H
+   ═══════════════════════════════════════════════════ */
+function buildH2HSelects(){
+  var players=sbGetP();
+  ['h2hP1','h2hP2'].forEach(function(id){
+    var sel=document.getElementById(id);if(!sel)return;
+    while(sel.options.length>1)sel.remove(1);
+    players.forEach(function(p){
+      var o=document.createElement('option');o.value=p.name;o.textContent=p.name;sel.appendChild(o);
+    });
+  });
+}
+function calcH2H(p1,p2){
+  // Build dynamic achievement map from DB tournaments
+  var tournaments=sbGetT();
+  var dynAchiev={};
+  tournaments.forEach(function(t){
+    if(t.status!=='completed')return;
+    if(t.champ){
+      if(!dynAchiev[t.champ])dynAchiev[t.champ]=[];
+      dynAchiev[t.champ].push({t:'c',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});
+    }
+    if(t.runner){
+      if(!dynAchiev[t.runner])dynAchiev[t.runner]=[];
+      dynAchiev[t.runner].push({t:'r',tier:t.tier,tourn:t.name+' '+t.year,org:t.org});
+    }
+  });
+  var a1=dynAchiev[p1]||[],a2=dynAchiev[p2]||[];
+  var t1={},t2={};
+  a1.forEach(function(a){t1[a.tourn]=a});
+  a2.forEach(function(a){t2[a.tourn]=a});
+  var meets=[],w1=0,w2=0;
+  Object.keys(t1).forEach(function(tourn){
+    if(t2[tourn]){
+      var r1=t1[tourn].t,r2=t2[tourn].t;
+      var winner=r1==='c'?p1:(r2==='c'?p2:null);
+      if(winner===p1)w1++;else if(winner===p2)w2++;
+      meets.push({tourn:tourn,winner:winner,tier:t1[tourn].tier});
+    }
+  });
+  return{w1:w1,w2:w2,meets:meets};
+}
+function showH2H(){
+  var p1=document.getElementById('h2hP1').value,p2=document.getElementById('h2hP2').value;
+  var el=document.getElementById('h2hResult');
+  if(!p1||!p2){el.innerHTML='<div class="h2h-nomeet">Pilih 2 player terlebih dahulu.</div>';return}
+  if(p1===p2){el.innerHTML='<div class="h2h-nomeet">Pilih 2 player yang berbeda.</div>';return}
+  var res=calcH2H(p1,p2);
+  var players=sbGetP();
+  var d1=players.find(function(x){return x.name===p1})||{champ:0,runner:0};
+  var d2=players.find(function(x){return x.name===p2})||{champ:0,runner:0};
+  var winner3=res.w1>res.w2?p1:res.w2>res.w1?p2:'';
+  var h='<div class="h2h-result"><div class="h2h-header">';
+  h+='<div class="h2h-player"><div class="h2h-pname" style="'+(winner3===p1?'color:var(--gold)':'')+'">'+p1+(winner3===p1?' &#9733;':'')+'</div><div class="h2h-pstat">'+d1.champ+'&#9733; '+d1.runner+'&#9650; · WR '+getWinRate(d1.champ,d1.runner)+'%</div></div>';
+  h+='<div class="h2h-score">'+res.w1+'&thinsp;&ndash;&thinsp;'+res.w2+'</div>';
+  h+='<div class="h2h-player" style="text-align:right"><div class="h2h-pname" style="'+(winner3===p2?'color:var(--gold)':'')+'">'+p2+(winner3===p2?' &#9733;':'')+'</div><div class="h2h-pstat">'+d2.champ+'&#9733; '+d2.runner+'&#9650; · WR '+getWinRate(d2.champ,d2.runner)+'%</div></div>';
+  h+='</div><div class="h2h-meetings">';
+  if(!res.meets.length) h+='<div class="h2h-nomeet">Kedua player <b>belum pernah bertemu</b> di turnamen yang sama.</div>';
+  else{
+    h+='<div class="h2h-meet-title">'+res.meets.length+' Pertemuan Langsung</div>';
+    res.meets.forEach(function(m){
+      h+='<div class="h2h-meet-row"><div class="h2h-meet-tourn">'+m.tourn+'</div><span class="tbadge '+getTierClass(m.tier)+'">'+m.tier+'</span>';
+      if(m.winner)h+='<span class="h2h-meet-result '+(m.winner===p1?'h2h-win1':'h2h-win2')+'">'+m.winner+' &#9733;</span>';
+      h+='</div>';
+    });
+  }
+  h+='</div></div>';
+  el.innerHTML=h;
+}
+function goH2H(name){
+  closeModal();
+  setTimeout(function(){navTo('h2h');document.getElementById('h2hP1').value=name;},250);
+}
+
+/* ═══════════════════════════════════════════════════
+   STATS + CHARTS
+   ═══════════════════════════════════════════════════ */
+function renderBarChart(id,data,maxV,colorFn){
+  var el=document.getElementById(id);if(!el)return;
+  el.innerHTML=data.map(function(d){
+    return '<div class="bar-row"><div class="bar-label">'+d.label+'</div>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:0%;background:'+colorFn(d)+'"></div></div>'
+      +'<div class="bar-val">'+d.v+'</div></div>';
+  }).join('');
+  setTimeout(function(){
+    el.querySelectorAll('.bar-fill').forEach(function(f,i){f.style.width=(maxV>0?data[i].v/maxV*100:0)+'%'});
+  },80);
+}
+function renderDonut(data){
+  var canvas=document.getElementById('donutCanvas'),leg=document.getElementById('donutLegend');
+  if(!canvas||!leg)return;
+  var ctx=canvas.getContext('2d'),total=data.reduce(function(a,d){return a+d.v},0),angle=-Math.PI/2,cx=40,cy=40,r=34,ir=20;
+  ctx.clearRect(0,0,80,80);
+  data.forEach(function(d){
+    var sw=total>0?(d.v/total)*Math.PI*2:0;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+sw);ctx.closePath();
+    ctx.fillStyle=d.col;ctx.fill();angle+=sw;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,Math.PI*2);ctx.fillStyle='#0b1220';ctx.fill();
+  ctx.fillStyle='#e8f0ff';ctx.font='bold 11px Rajdhani,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(total,cx,cy);
+  leg.innerHTML=data.map(function(d){
+    var pct=total>0?Math.round(d.v/total*100):0;
+    return '<div class="dleg-row"><div class="dleg-dot" style="background:'+d.col+'"></div><div class="dleg-lbl">Tier '+d.label+'</div><div class="dleg-val">'+d.v+' ('+pct+'%)</div></div>';
+  }).join('');
+}
+function renderCharts(){
+  var players=sbGetP();
+  var champs=players.filter(function(p){return p.champ>0}).sort(function(a,b){return b.champ-a.champ});
+  var maxC=champs.length>0?champs[0].champ:1;
+  renderBarChart('champChart',champs.map(function(p){return{label:p.name,v:p.champ}}),maxC,function(d){
+    return d.v>=4?'linear-gradient(90deg,#f5c842,#ff9900)':d.v>=2?'linear-gradient(90deg,#4d9fff,#7040c8)':'linear-gradient(90deg,#3dba72,#1a6aff)';
+  });
+  var tournaments=sbGetT();
+  var seasons={};
+  tournaments.filter(function(t){return t.status!=='canceled'}).forEach(function(t){seasons[t.year]=(seasons[t.year]||0)+1});
+  var seasonArr=Object.keys(seasons).map(function(y){return{label:y,v:seasons[y]}});
+  var maxS=seasonArr.reduce(function(a,b){return Math.max(a,b.v)},0);
+  renderBarChart('seasonChart',seasonArr,maxS,function(){return 'linear-gradient(90deg,var(--blue),var(--red))'});
+  var tiers={B:0,'B+':0,A:0};
+  tournaments.filter(function(t){return t.status==='completed'}).forEach(function(t){if(tiers[t.tier]!==undefined)tiers[t.tier]++});
+  renderDonut([
+    {label:'B',v:tiers.B,col:'#4d9fff'},
+    {label:'B+',v:tiers['B+'],col:'#a070ff'},
+    {label:'A',v:tiers.A,col:'#ff7755'},
+  ]);
+  // Fun facts
+  var total=players.reduce(function(a,p){return a+p.champ+p.runner},0);
+  var topP=players.sort(function(a,b){return b.champ-a.champ})[0];
+  document.getElementById('funfacts').innerHTML=[
+    {icon:'&#9889;',text:'<b>'+topP.name+'</b> adalah player paling dominan dengan <b>'+topP.champ+'</b> gelar champion.'},
+    {icon:'&#127942;',text:'Dari '+tournaments.filter(function(t){return t.status==='completed'}).length+' turnamen selesai, ada <b>'+new Set(tournaments.filter(function(t){return t.champ}).map(function(t){return t.champ})).size+'</b> juara berbeda.'},
+    {icon:'&#128200;',text:'ELITECL4SS terus naik tier: B &#8594; B+ &#8594; B+ &#8594; B+ &#8594; <b>A</b> — perkembangan konsisten tiap season.'},
+    {icon:'&#9888;',text:'<b>'+tournaments.filter(function(t){return t.status==='canceled'}).length+'</b> dari '+tournaments.length+' turnamen dibatalkan dalam sejarah ASB Foundation.'},
+  ].map(function(f){return '<div class="funfact"><div class="funfact-icon">'+f.icon+'</div><div class="funfact-text">'+f.text+'</div></div>'}).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   REAL-TIME VOTING SYSTEM
+   ═══════════════════════════════════════════════════ */
+function getVotes(){ return DB.get('votes')||{}; }
+function saveVotes(v){ DB.set('votes',v); }
+
+function renderVoting(votesArr,myVoteCandidate,cfg){
+  if(!cfg) cfg=getPredConfig();
+  var candidates=cfg.candidates||PRED_CANDIDATES;
+  var titleEl=document.getElementById('predDynTitle');
+  var subEl=document.getElementById('predDynSub');
+  if(titleEl) titleEl.textContent=cfg.title||'';
+  if(subEl) subEl.textContent=cfg.sub||'';
+  var el=document.getElementById('predOptions');
+  var totalEl=document.getElementById('predTotal');
+  if(!el)return;
+  var counts={};
+  if(votesArr){votesArr.forEach(function(v){counts[v.candidate]=(counts[v.candidate]||0)+1;});}
+  var myVote=myVoteCandidate||'';
+  var total=candidates.reduce(function(s,c){return s+(counts[c]||0);},0);
+  el.innerHTML=candidates.map(function(name){
+    var cnt=counts[name]||0;
+    var pct=total>0?Math.round(cnt/total*100):0;
+    var isMe=myVote===name;
+    return '<div class="pred-opt'+(isMe?' voted':'')+(myVote?' disabled':'')+'" '+(myVote?'':'onclick="castVote(\''+name+'\')"')+'>'      +'<div class="pred-opt-bg" style="background:linear-gradient(90deg,var(--blue),transparent);width:'+pct+'%"></div>'      +'<div class="pred-opt-name">'+(isMe?'&#9733; ':'')+name+'</div>'      +'<div class="pred-opt-bar"><div class="pred-opt-fill" style="width:'+pct+'%"></div></div>'      +'<div class="pred-opt-pct">'+pct+'%</div>'      +'</div>';
+  }).join('');
+  if(totalEl) totalEl.textContent=total+' vote'+(total!==1?'s':'')+(myVote?' · Kamu pilih '+myVote:'');
+}
+
+function sbLoadVoting(){
+  SB.from('votes').select('*').run(function(err,allVotes){
+    allVotes=allVotes||[];
+    var myV='';
+    if(currentUser){
+      var mine=allVotes.find(function(v){return v.username===currentUser.username;});
+      if(mine) myV=mine.candidate;
+    }
+    SB.from('vote_config').select('*').eq('id',1).run(function(e2,cfgData){
+      var cfg=getPredConfig();
+      if(cfgData&&cfgData.length>0){
+        var row=cfgData[0];
+        var cands=Array.isArray(row.candidates)?row.candidates:JSON.parse(row.candidates||'[]');
+        cfg={title:row.title,sub:row.subtitle,candidates:cands};
+        DB.set('voteConfig',cfg);
+      }
+      renderVoting(allVotes,myV,cfg);
+    });
+  });
+}
+
+function castVote(name){
+  if(!currentUser){showToast('Login dulu untuk vote!','error');showAuthForm('login');return;}
+  var cfg=getPredConfig();
+  if(cfg.candidates.indexOf(name)<0){showToast('Kandidat tidak valid','error');return;}
+  // Cek apakah sudah vote
+  SB.from('votes').select('*').eq('username',currentUser.username).run(function(err,data){
+    if(data&&data.length>0){showToast('Kamu sudah vote untuk '+data[0].candidate+'!','info');return;}
+    // Insert vote
+    SB.from('votes').insert({username:currentUser.username,candidate:name}).run(function(e2,d2){
+      if(e2||!d2||(d2.error)){showToast('Gagal vote, coba lagi','error');return;}
+      sbLogActivity('vote',currentUser.username+' vote untuk '+name);
+      showToast('Vote untuk '+name+' berhasil!','success');
+      sbLoadVoting();
+    });
+  });
+}
+
+function startVotePolling(){
+  if(voteInterval)clearInterval(voteInterval);
+  sbLoadVoting();
+  loadAnnouncement();
+  voteInterval=setInterval(function(){
+    sbLoadVoting();
+    loadAnnouncement();
+    // Reload turnamen & player dari Supabase setiap 10 detik
+    sbLoadTournaments(function(){
+      renderOrganizer();renderAchievement();renderTimeline();
+      renderHallOfFame();updateStatsBar();buildH2HSelects();initFilter();
+    });
+    sbLoadPlayers(function(){
+      renderOrganizer();renderAchievement();updateStatsBar();buildH2HSelects();
+    });
+  },8000);
+}
+
+/* ═══ SUPABASE GLOBAL DATA ═══ */
+var _sbT=null; var _sbP=null;
+
+function sbGetT(){ return _sbT||DEFAULT_TOURNAMENTS; }
+function sbGetP(){ return _sbP||DEFAULT_PLAYERS; }
+
+function sbLoadAll(){
+  SB.from('tournaments').select('*').order('sort_order',false).run(function(e,d){
+    if(!e&&d&&d.length) _sbT=d;
+    else if(!_sbT) _sbT=DEFAULT_TOURNAMENTS.slice();
+    SB.from('players').select('*').order('sort_order',false).run(function(e2,d2){
+      if(!e2&&d2&&d2.length) _sbP=d2;
+      else if(!_sbP) _sbP=DEFAULT_PLAYERS.slice();
+      sbRenderAll();
+    });
+  });
+}
+
+function sbRenderAll(){
+  renderOrganizer();
+  renderAchievement();
+  renderTimeline();
+  renderHallOfFame();
+  updateStatsBar();
+  buildH2HSelects();
+  initFilter();
+}
+
+function startGlobalPolling(){
+  setInterval(function(){
+    sbLoadAll();
+    loadAnnouncement();
+  },6000);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   TIMELINE RENDER
+   ═══════════════════════════════════════════════════ */
+function renderTimeline(){
+  var tournaments=sbGetT();
+  var ec4=tournaments.filter(function(t){return t.org==='ELITECL4SS'});
+  // Season track
+  var trackHtml=ec4.map(function(t,i){
+    var isDone=t.status==='completed',isCancel=t.status==='canceled',isUp=t.status==='upcoming';
+    var dotClass=isDone?'sdot done':isCancel?'sdot sdx':'sdot sdu';
+    var label=isCancel?'S'+(i+1):isUp?'F'+(i+1):'S'+(i+1);
+    return '<div class="snode'+(isCancel?' sxl':'')+'"><div class="'+dotClass+'">'+label+'</div>'
+      +'<div class="snode-n" style="'+(isCancel?'color:var(--orange)':isUp?'color:var(--gold)':'')+'">'+t.name+'</div>'
+      +'<div class="snode-t" style="'+(isUp?'color:var(--gold)':'')+'">'+t.tier+(isCancel?' ✗':isUp?' ⟳':'')+'</div></div>';
+  }).join('');
+  document.getElementById('seasonTrack').innerHTML=trackHtml;
+  // Full timeline
+  var tlHtml=tournaments.map(function(t){
+    var isCancel=t.status==='canceled',isUp=t.status==='upcoming';
+    var dotClass='tl-dot'+(isCancel?' c':isUp?' u':'');
+    var tierBadge=isCancel||isUp?'':'<span class="tbadge '+getTierClass(t.tier)+'">'+t.tier+'</span>';
+    var statusTag=isCancel?'<span class="tag-xl">CANCELED</span>':isUp?'<span class="tag-up">UPCOMING</span>':'';
+    var is2vTag=t.is2v2?'<span class="tag2vtl">2v2</span>':'';
+    var resHtml='';
+    if(t.status==='completed') resHtml='<div class="tl-res"><span class="chip cchamp" style="font-size:8px"><span class="ic">&#9733;</span>'+t.champ+'</span><span class="chip crunner" style="font-size:8px"><span class="ir">&#9650;</span>'+t.runner+'</span></div>';
+    else if(isUp) resHtml='<div class="tl-res"><span class="chip ccoming" style="font-size:8px">&#9675; Coming Soon</span></div>';
+    return '<div class="tl-item"><div class="'+dotClass+'"></div>'
+      +'<div class="tl-hdr"><span class="tl-name'+(isCancel?' style="color:var(--t3)"':'')+'">'+(isCancel?'<span style="color:var(--t3)">':'')+t.name+(isCancel?'</span>':'')+'</span>'
+      +tierBadge+'<span class="tl-org">'+t.org+'</span><span class="tl-season">'+t.year+'</span>'+statusTag+is2vTag+'</div>'
+      +resHtml+'</div>';
+  }).join('');
+  document.getElementById('timelineList').innerHTML=tlHtml;
+}
+
+/* ═══════════════════════════════════════════════════
+   HALL OF FAME RENDER (dinamis)
+   ═══════════════════════════════════════════════════ */
+function renderHallOfFame(){
+  var tournaments=sbGetT();
+  var players=sbGetP();
+
+  // Build live stats from tournaments
+  var champMap={},runnerMap={},tierAChamp={},bpChamp={},firstChamp=null,first2v2=null,firstEverTournament=null;
+  // Sort tournaments by id/order for "first ever"
+  var completed=tournaments.filter(function(t){return t.status==='completed'});
+  completed.forEach(function(t){
+    if(t.champ){
+      champMap[t.champ]=(champMap[t.champ]||0)+1;
+      if(!tierAChamp[t.tier] && t.tier==='A') tierAChamp['A']={name:t.champ,tourn:t.name+' '+t.year};
+      if(!bpChamp[t.tier] && t.tier==='B+') bpChamp['B+']={name:t.champ,tourn:t.name+' '+t.year};
+      if(!firstChamp) firstChamp={name:t.champ,tourn:t.name+' '+t.year};
+      if(t.is2v2 && !first2v2) first2v2={name:t.champ,tourn:t.name+' '+t.year};
+    }
+    if(t.runner) runnerMap[t.runner]=(runnerMap[t.runner]||0)+1;
+  });
+
+  // Most all-time champion
+  var topChamp='—',topChampCount=0;
+  Object.keys(champMap).forEach(function(n){if(champMap[n]>topChampCount){topChampCount=champMap[n];topChamp=n;}});
+
+  // Most consistent runner-up
+  var topRunnerCount=0;
+  Object.keys(runnerMap).forEach(function(n){if(runnerMap[n]>topRunnerCount)topRunnerCount=runnerMap[n];});
+  var topRunners=Object.keys(runnerMap).filter(function(n){return runnerMap[n]===topRunnerCount});
+  var topRunnerNames=topRunners.join(' & ');
+
+  function card(colorClass,icon,iconColor,title,name,desc,badgeBg,badgeColor,badgeBorder,badgeText){
+    return '<div class="hof-card '+colorClass+'">'
+      +'<div class="hof-icon" style="color:'+iconColor+'">'+icon+'</div>'
+      +'<div class="hof-info"><div class="hof-title">'+title+'</div>'
+      +'<div class="hof-name">'+name+'</div>'
+      +'<div class="hof-desc">'+desc+'</div></div>'
+      +'<div class="hof-badge" style="background:'+badgeBg+';color:'+badgeColor+';border:1px solid '+badgeBorder+'">'+badgeText+'</div>'
+      +'</div>';
+  }
+
+  var html='';
+  // 1. Most All-Time Champion
+  html+=card('gold','&#9819;','var(--gold)','Most All-Time Champion',topChamp,
+    topChampCount+' gelar juara di berbagai turnamen & tier',
+    '#1a1400','var(--gold)','#f5c84233',topChampCount+'&#215; &#9733;');
+  // 2. First Ever Champion
+  if(firstChamp) html+=card('blue','&#9733;','var(--blue2)','First Ever Champion',firstChamp.name,
+    'Juara pertama ASB Foundation — '+firstChamp.tourn,
+    '#0a2448','var(--blue2)','#1a6aff33','Pioneer');
+  // 3. First Tier A Champion
+  if(tierAChamp['A']) html+=card('red','&#9650;','var(--red2)','First Tier A Champion',tierAChamp['A'].name,
+    tierAChamp['A'].tourn+' — turnamen bergengsi ASB',
+    '#2e0d12','#ff7755','#e0263e33','Tier A');
+  // 4. First 2v2 Champions
+  if(first2v2) html+=card('green','&#128101;','var(--green)','First 2v2 Champions',first2v2.name,
+    'Tim pertama yang menang format 2v2 — '+first2v2.tourn,
+    '#0e3320','var(--green)','#3dba7233','2v2 &#9733;');
+  // 5. First B+ Champion
+  if(bpChamp['B+']) html+=card('purple','&#9672;','#c090ff','First B+ Champion',bpChamp['B+'].name,
+    bpChamp['B+']. tourn+' — era baru era B+',
+    '#1a1040','#a070ff','#a070ff33','B+ Era');
+  // 6. Most Consistent Runner-Up
+  if(topRunners.length>0) html+=card('gold','&#9651;','var(--orange)','Most Consistent Runner-Up',topRunnerNames,
+    'Masing-masing '+topRunnerCount+'&#215; Runner-up — selalu top 2',
+    '#3a1a0022','var(--orange)','#e0704033',topRunnerCount+'&#215; RU');
+
+  document.getElementById('hofGrid').innerHTML=html||'<div style="padding:20px;color:var(--t3);text-align:center;font-size:11px">Belum ada data Hall of Fame</div>';
+}
+function renderAdminPanel(){
+  // Load data dari Supabase dulu
+  if(!currentUser||currentUser.role!=='admin'){
+    var el=document.getElementById('adminContent');
+    if(el)el.innerHTML='<div class="admin-locked"><div class="lock-icon">&#128274;</div><div>Akses Admin Only</div><button class="btn-primary" onclick="showAuthForm(\'login\')" style="margin-top:10px">Login</button></div>';
+    return;
+  }
+  // Load semua data async
+  var loaded={users:null,announces:null,log:null,votes:null};
+  function tryRender(){
+    if(loaded.users!==null&&loaded.announces!==null&&loaded.log!==null&&loaded.votes!==null)
+      _renderAdminContent(loaded.users,loaded.announces,loaded.log,loaded.votes);
+  }
+  SB.from('users').select('*').order('created_at',false).run(function(e,d){loaded.users=d||[];tryRender();});
+  SB.from('announcements').select('*').order('created_at',true).run(function(e,d){loaded.announces=d||[];tryRender();});
+  SB.from('activity_log').select('*').order('created_at',true).limit(30).run(function(e,d){loaded.log=d||[];tryRender();});
+  SB.from('votes').select('*').run(function(e,d){loaded.votes=d||[];tryRender();});
+}
+function _renderAdminContent(sbUsers,sbAnnounces,sbLog,sbVotes){
+  if(!currentUser||currentUser.role!=='admin'){
+    document.getElementById('adminContent').innerHTML='<div class="admin-locked"><div class="lock-icon">&#128274;</div><div>Akses Admin Only</div><button class="btn-primary" onclick="showAuthForm(\'login\')" style="margin-top:10px">Login</button></div>';
+    return;
+  }
+  var tournaments=sbGetT();
+  var players=sbGetP();
+  var votes=getVotes();
+  var vCfgOv=DB.get('voteConfig')||{candidates:PRED_CANDIDATES};
+  var totalVotes=(vCfgOv.candidates||PRED_CANDIDATES).reduce(function(s,c){return s+(votes[c]||0)},0);
+  var html='';
+
+  // Stats overview
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#128202;</span>Overview</div>';
+  html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:12px 14px">';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:var(--blue2)">'+tournaments.length+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Turnamen</div></div>';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:var(--green)">'+players.length+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Players</div></div>';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:var(--gold)">'+totalVotes+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Total Votes</div></div>';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:var(--red2)">'+tournaments.filter(function(t){return t.status==='canceled'}).length+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Canceled</div></div>';
+  html+='</div>';
+  var allUOv=DB.get('users')||[];
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 14px 12px">';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:#a070ff">'+allUOv.length+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Total Users</div></div>';
+  html+='<div style="text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px"><div style="font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;color:var(--blue2)">'+allUOv.filter(function(u){return u.role==='admin'}).length+'</div><div style="font-size:7px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Admins</div></div>';
+  html+='</div></div>';
+
+  // Add tournament
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#43;</span>Tambah Turnamen</div>';
+  html+='<div class="admin-form">';
+  html+='<div class="full"><label class="form-label">Nama Turnamen</label><input class="form-input" id="newTName" placeholder="cth: HX F1"></div>';
+  html+='<div><label class="form-label">Tahun</label><input class="form-input" id="newTYear" placeholder="cth: 2026/2027"></div>';
+  html+='<div><label class="form-label">Tier</label><select class="form-select" id="newTTier"><option>B</option><option>B+</option><option>A</option><option>S</option></select></div>';
+  html+='<div><label class="form-label">Organizer</label><select class="form-select" id="newTOrg"><option>ASB</option><option>APLS1</option><option>ELITECL4SS</option></select></div>';
+  html+='<div><label class="form-label">Status</label><select class="form-select" id="newTStatus"><option value="completed">Completed</option><option value="upcoming">Upcoming</option><option value="canceled">Canceled</option></select></div>';
+  html+='<div><label class="form-label">Champion</label><input class="form-input" id="newTChamp" placeholder="Nama player"></div>';
+  html+='<div><label class="form-label">Runner-up</label><input class="form-input" id="newTRunner" placeholder="Nama player"></div>';
+  html+='<div style="display:flex;align-items:center;gap:8px;padding-top:18px"><input type="checkbox" id="newT2v2" style="width:14px;height:14px"><label for="newT2v2" class="form-label" style="margin:0;cursor:pointer">Format 2v2</label></div>';
+  html+='<div class="full"><button class="btn-primary" onclick="adminAddTournament()">&#43; Tambah Turnamen</button></div>';
+  html+='</div></div>';
+
+  // Manage tournaments
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#9998;</span>Kelola Turnamen</div><div class="admin-list" id="adminTList">';
+  tournaments.forEach(function(t){
+    html+='<div class="admin-item" id="atrow_'+t.id+'">';
+    html+='<div class="admin-item-info"><div class="admin-item-name">'+t.name+' <span class="tbadge '+getTierClass(t.tier)+'">'+t.tier+'</span></div>';
+    html+='<div class="admin-item-sub">'+t.org+' · '+t.year+' · <span style="color:'+(t.status==='completed'?'var(--green)':t.status==='canceled'?'var(--orange)':'var(--blue2)')+'">'+t.status+'</span></div></div>';
+    html+='<div class="admin-item-actions">';
+    html+='<button class="btn-sm btn-sm-edit" onclick="adminEditTournament(\''+t.id+'\')">Edit</button>';
+    html+='<button class="btn-sm btn-sm-del" onclick="adminDelTournament(\''+t.id+'\')">Del</button>';
+    html+='</div></div>';
+  });
+  html+='</div></div>';
+
+  // Add player
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#43;</span>Tambah Player</div>';
+  html+='<div class="admin-form">';
+  html+='<div><label class="form-label">Nama Player</label><input class="form-input" id="newPName" placeholder="Nama lengkap"></div>';
+  html+='<div><label class="form-label">Best Tier</label><select class="form-select" id="newPBest"><option>B</option><option>B+</option><option>A</option><option>S</option></select></div>';
+  html+='<div><label class="form-label">Champion</label><input class="form-input" id="newPChamp" type="number" value="0" min="0"></div>';
+  html+='<div><label class="form-label">Runner-up</label><input class="form-input" id="newPRunner" type="number" value="0" min="0"></div>';
+  html+='<div style="display:flex;align-items:center;gap:8px;padding-top:18px"><input type="checkbox" id="newPTeam" style="width:14px;height:14px"><label for="newPTeam" class="form-label" style="margin:0;cursor:pointer">Tim 2v2</label></div>';
+  html+='<div class="full"><button class="btn-primary" onclick="adminAddPlayer()">&#43; Tambah Player</button></div>';
+  html+='</div></div>';
+
+  // Manage players
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#9998;</span>Kelola Player</div><div class="admin-list" id="adminPList">';
+  players.forEach(function(p){
+    var wr=getWinRate(p.champ,p.runner);
+    html+='<div class="admin-item" id="aprow_'+p.id+'">';
+    html+='<div class="admin-item-info"><div class="admin-item-name">'+p.name+(p.team?' <span class="tag2v2">2v2</span>':'')+'</div>';
+    html+='<div class="admin-item-sub">'+p.champ+'&#9733; '+p.runner+'&#9650; · WR '+wr+'% · Best: '+p.best+'</div></div>';
+    html+='<div class="admin-item-actions">';
+    html+='<button class="btn-sm btn-sm-edit" onclick="adminEditPlayer(\''+p.id+'\')">Edit</button>';
+    html+='<button class="btn-sm btn-sm-del" onclick="adminDelPlayer(\''+p.id+'\')">Del</button>';
+    html+='</div></div>';
+  });
+  html+='</div></div>';
+
+  // Vote management
+  // Vote config
+  var vCfg=DB.get('voteConfig')||{title:'Prediksi HX F1 - Tier A',sub:'Siapa yang bakal juara? Vote sekarang!',candidates:PRED_CANDIDATES.slice()};
+  var vCands=vCfg.candidates||PRED_CANDIDATES;
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#128202;</span>Vote Manager</div>';
+  // Pengaturan voting
+  html+='<div style="padding:12px 14px;border-bottom:1px solid var(--border)">';
+  html+='<div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Pengaturan Voting</div>';
+  html+='<div class="form-group"><label class="form-label">Nama Turnamen Voting</label>';
+  html+='<input class="form-input" id="vcTitle" value="'+vCfg.title+'" style="font-size:11px;padding:7px 10px"></div>';
+  html+='<div class="form-group"><label class="form-label">Subtitle</label>';
+  html+='<input class="form-input" id="vcSub" value="'+vCfg.sub+'" style="font-size:11px;padding:7px 10px"></div>';
+  html+='<div class="form-group"><label class="form-label">Kandidat (satu per baris)</label>';
+  html+='<textarea class="form-input" id="vcCands" rows="5" style="font-size:11px;padding:7px 10px;resize:vertical">'+vCands.join('\n')+'</textarea>';
+  html+='<div style="font-size:9px;color:var(--t3);margin-top:4px">&#9888; Mengubah kandidat akan reset semua votes</div></div>';
+  html+='<div style="display:flex;gap:7px">';
+  html+='<button class="btn-primary" style="font-size:10px;padding:7px 14px;flex:1" onclick="adminSaveVoteConfig()">&#10003; Simpan Pengaturan</button>';
+  html+='<button class="btn-danger" style="font-size:10px;padding:7px 14px" onclick="adminResetVotes()">&#128465; Reset Votes</button>';
+  html+='</div></div>';
+  html+='<div class="admin-list">';
+  vCands.forEach(function(name){
+    var cnt=votes[name]||0;
+    var pct=totalVotes>0?Math.round(cnt/totalVotes*100):0;
+    html+='<div class="admin-item"><div class="admin-item-info"><div class="admin-item-name">'+name+'</div>';
+    html+='<div style="display:flex;align-items:center;gap:7px;margin-top:4px">';
+    html+='<div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--gold));width:'+pct+'%"></div></div>';
+    html+='<span style="font-size:9px;color:var(--gold);font-weight:700">'+cnt+' votes ('+pct+'%)</span></div>';
+    html+='</div></div>';
+  });
+
+  html+='</div></div>';
+
+  // ── ANNOUNCEMENTS ──
+  var announces=sbAnnounces||[];
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#128226;</span>Pengumuman</div>';
+  html+='<div style="padding:12px 14px;border-bottom:1px solid var(--border)">';
+  html+='<div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:7px">Buat Pengumuman Baru</div>';
+  html+='<textarea class="form-input" id="newAnnounce" rows="2" placeholder="Tulis pengumuman..." style="resize:vertical;font-size:11px;padding:7px 10px;margin-bottom:7px;width:100%"></textarea>';
+  html+='<button class="btn-primary" style="font-size:10px;padding:7px 16px" onclick="adminPostAnnounce()">&#128228; Post Pengumuman</button>';
+  html+='</div><div class="admin-list">';
+  if(announces.length===0){
+    html+='<div style="padding:14px;text-align:center;font-size:10px;color:var(--t3)">Belum ada pengumuman</div>';
+  } else {
+    announces.slice().reverse().forEach(function(a,i){
+      var ri=announces.length-1-i;
+      html+='<div class="admin-item"><div class="admin-item-info"><div class="admin-item-name" style="font-size:11px;font-weight:400;color:var(--t2)">'+a.text+'</div>';
+      html+='<div class="admin-item-sub">'+a.by+' &middot; '+a.time+'</div></div>';
+      html+='<div class="admin-item-actions"><button class="btn-sm btn-sm-del" onclick="adminDelAnnounce(\"'+a.id+'\")">Del</button></div></div>';
+    });
+  }
+  html+='</div></div>';
+
+  // ── ACTIVITY LOG ──
+  var actLog=sbLog||[];
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#128203;</span>Activity Log</div>';
+  html+='<div class="admin-list" style="max-height:260px;overflow-y:auto">';
+  if(actLog.length===0){
+    html+='<div style="padding:14px;text-align:center;font-size:10px;color:var(--t3)">Belum ada aktivitas</div>';
+  } else {
+    actLog.slice().reverse().slice(0,30).forEach(function(a){
+      var ic=a.type==='vote'?'&#128202;':a.type==='login'?'&#128275;':a.type==='signup'?'&#128100;':'&#9998;';
+      html+='<div style="display:flex;gap:8px;padding:6px 14px;border-bottom:1px solid #0c1825">';
+      html+='<span style="font-size:12px;flex-shrink:0">'+ic+'</span>';
+      html+='<div><div style="font-size:10px;color:var(--t1)">'+(a.message||a.msg||'')+'</div>';
+      html+='<div style="font-size:8px;color:var(--t3);margin-top:2px">'+(a.time||new Date(a.created_at).toLocaleString('id-ID'))+'</div></div></div>';
+    });
+  }
+  html+='</div><div style="padding:8px 14px"><button class="btn-sm btn-sm-del" style="font-size:9px" onclick="adminClearLog()">&#128465; Clear Log</button></div></div>';
+
+  // ── USER MANAGEMENT ──
+  var allUsers=sbUsers||[];
+  html+='<div class="admin-section"><div class="admin-sec-hdr"><span class="admin-icon">&#128101;</span>User Management</div>';
+  html+='<div style="padding:12px 14px;border-bottom:1px solid var(--border)">';
+  html+='<div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Buat Akun Baru</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px">';
+  html+='<div><label class="form-label">Username</label><input class="form-input" id="nuUser" placeholder="Min 3 karakter" style="font-size:11px;padding:6px 10px"></div>';
+  html+='<div><label class="form-label">Password</label><input class="form-input" id="nuPass" type="password" placeholder="Min 6 karakter" style="font-size:11px;padding:6px 10px"></div>';
+  html+='</div>';
+  html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:9px">';
+  html+='<label style="font-size:9px;color:var(--t3);letter-spacing:1px;text-transform:uppercase">Role:</label>';
+  html+='<label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:10px;color:var(--t2)"><input type="radio" name="nuRole" value="member" checked> Member</label>';
+  html+='<label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:10px;color:var(--gold)"><input type="radio" name="nuRole" value="admin"> &#9733; Admin</label>';
+  html+='</div>';
+  html+='<button class="btn-primary" style="font-size:10px;padding:7px 16px" onclick="adminCreateUser()">&#43; Buat Akun</button>';
+  html+='</div>';
+  html+='<div class="admin-list">';
+  allUsers.forEach(function(u){
+    var isMe=currentUser&&u.username===currentUser.username;
+    var isAdm=u.role==='admin';
+    html+='<div class="admin-item">';
+    html+='<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,'+(isAdm?'#f5c842,#e07040':'#1a6aff,#7040c8')+');display:flex;align-items:center;justify-content:center;font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden">';
+    if(u.avatar)html+='<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover">';
+    else html+=u.username[0].toUpperCase();
+    html+='</div>';
+    html+='<div class="admin-item-info" style="margin-left:8px">';
+    html+='<div class="admin-item-name">'+u.username+(isMe?' <span style="font-size:8px;color:var(--blue2);border:1px solid #1a6aff44;padding:1px 5px;border-radius:10px">Kamu</span>':'')+'</div>';
+    html+='<div class="admin-item-sub" style="color:'+(isAdm?'var(--gold)':'var(--blue2)')+'">'+(isAdm?'&#9733; Admin':'&#128100; Member')+'</div>';
+    html+='</div><div class="admin-item-actions">';
+    if(!isMe){
+      var un=u.username;
+      if(isAdm){
+        html+='<button class="btn-sm" style="background:#0a2448;color:var(--blue2);border:1px solid #1a6aff22" onclick="adminToggleRole(this.dataset.u,\'member\')" data-u="'+un+'">&#10227; Member</button>';
+      } else {
+        html+='<button class="btn-sm" style="background:#1a1400;color:var(--gold);border:1px solid #f5c84222" onclick="adminToggleRole(this.dataset.u,\'admin\')" data-u="'+un+'">&#9733; Admin</button>';
+      }
+      html+='<button class="btn-sm btn-sm-edit" onclick="adminResetUserPass(this.dataset.u)" data-u="'+un+'" title="Reset PW">&#128274;</button>';
+      html+='<button class="btn-sm btn-sm-del" onclick="adminDelUser(this.dataset.u)" data-u="'+un+'">Del</button>';
+    } else {
+      html+='<span style="font-size:8px;color:var(--t3);padding:3px 7px">Protected</span>';
+    }
+    html+='</div></div>';
+  });
+  html+='</div></div>';
+
+  // Danger Zone — Reset Database
+
+  html+='<div class="admin-section" style="border-color:#e0263e44"><div class="admin-sec-hdr" style="color:var(--red2)"><span class="admin-icon">&#9888;</span>Danger Zone</div>';
+  html+='<div style="padding:12px 14px">';
+  html+='<div style="font-size:10px;color:var(--t3);margin-bottom:10px;line-height:1.6">Reset database akan menghapus <b style="color:var(--red2)">SEMUA data</b> (turnamen, player, votes) dan mengembalikan ke data default awal. Aksi ini <b style="color:var(--red2)">tidak bisa dibatalkan</b>.</div>';
+  html+='<button class="btn-danger" style="font-size:10px;padding:8px 18px" onclick="adminResetDatabase()">&#128165; Reset Seluruh Database</button>';
+  html+='</div></div>';
+
+  document.getElementById('adminContent').innerHTML=html;
+}
+
+/* ─── ADMIN ACTIONS ─── */
+function adminAddTournament(){
+  var name=document.getElementById('newTName').value.trim();
+  var year=document.getElementById('newTYear').value.trim();
+  var tier=document.getElementById('newTTier').value;
+  var org=document.getElementById('newTOrg').value;
+  var status=document.getElementById('newTStatus').value;
+  var champ=document.getElementById('newTChamp').value.trim();
+  var runner=document.getElementById('newTRunner').value.trim();
+  var is2v2=document.getElementById('newT2v2').checked;
+  if(!name||!year){showToast('Nama dan tahun harus diisi','error');return}
+  var id='t'+Date.now();
+  var newT={id:id,name:name,year:year,tier:tier,org:org,status:status,champ:champ,runner:runner,is2v2:is2v2,sort_order:Date.now()};
+  SB.from('tournaments').insert(newT).run(function(e,d){
+    if(e||!d){showToast('Gagal tambah turnamen','error');return;}
+    if(!_sbT) _sbT=[];
+    _sbT.push(newT);
+    showToast('Turnamen "'+name+'" berhasil ditambahkan!','success');
+    sbRenderAll();renderAdminPanel();
+  });
+}
+function adminDelTournament(id){
+  if(!confirm('Hapus turnamen ini?'))return;
+  SB.from('tournaments').eq('id',id).del().run(function(){
+    if(_sbT) _sbT=_sbT.filter(function(t){return t.id!==id;});
+    showToast('Turnamen dihapus','info');
+    sbRenderAll();renderAdminPanel();
+  });
+}
+function adminEditTournament(id){
+  var tournaments=sbGetT();
+  var t=tournaments.find(function(x){return x.id===id});
+  if(!t)return;
+  var row=document.getElementById('atrow_'+id);
+  row.innerHTML='<div class="edit-row" style="flex-wrap:wrap;gap:5px;padding:3px 0">'
+    +'<input class="form-input" id="et_name" value="'+t.name+'" style="flex:1;min-width:80px;font-size:11px;padding:5px 8px">'
+    +'<input class="form-input" id="et_year" value="'+t.year+'" style="width:90px;font-size:11px;padding:5px 8px">'
+    +'<select class="form-select" id="et_tier" style="width:60px;font-size:11px;padding:5px 8px"><option '+(t.tier==='B'?'selected':'')+'>B</option><option '+(t.tier==='B+'?'selected':'')+'>B+</option><option '+(t.tier==='A'?'selected':'')+'>A</option><option '+(t.tier==='S'?'selected':'')+'>S</option></select>'
+    +'<select class="form-select" id="et_status" style="font-size:11px;padding:5px 8px"><option value="completed" '+(t.status==='completed'?'selected':'')+'>Completed</option><option value="upcoming" '+(t.status==='upcoming'?'selected':'')+'>Upcoming</option><option value="canceled" '+(t.status==='canceled'?'selected':'')+'>Canceled</option></select>'
+    +'<input class="form-input" id="et_champ" value="'+(t.champ||'')+'" placeholder="Champion" style="flex:1;min-width:80px;font-size:11px;padding:5px 8px">'
+    +'<input class="form-input" id="et_runner" value="'+(t.runner||'')+'" placeholder="Runner" style="flex:1;min-width:80px;font-size:11px;padding:5px 8px">'
+    +'<button class="btn-sm btn-sm-save" onclick="adminSaveTournament(\''+id+'\')">Simpan</button>'
+    +'<button class="btn-sm btn-sm-del" onclick="renderAdminPanel()">Batal</button>'
+    +'</div>';
+}
+function adminSaveTournament(id){
+  var updates={
+    name:(document.getElementById('et_name')||{value:''}).value.trim(),
+    year:(document.getElementById('et_year')||{value:''}).value.trim(),
+    tier:(document.getElementById('et_tier')||{value:'B'}).value,
+    status:(document.getElementById('et_status')||{value:'upcoming'}).value,
+    champ:(document.getElementById('et_champ')||{value:''}).value.trim(),
+    runner:(document.getElementById('et_runner')||{value:''}).value.trim()
+  };
+  if(!updates.name||!updates.year){showToast('Nama dan tahun harus diisi','error');return;}
+  SB.from('tournaments').eq('id',id).update(updates).run(function(e,data){
+    if(e){showToast('Gagal simpan: '+JSON.stringify(e),'error');return;}
+    // Update cache lokal langsung
+    if(_sbT){
+      var idx=_sbT.findIndex(function(x){return x.id===id;});
+      if(idx>=0) Object.assign(_sbT[idx],updates);
+    }
+    showToast('Turnamen berhasil diupdate!','success');
+    sbRenderAll();renderAdminPanel();
+  });
+}
+function adminAddPlayer(){
+  var name=document.getElementById('newPName').value.trim();
+  var best=document.getElementById('newPBest').value;
+  var team=document.getElementById('newPTeam').checked;
+  if(!name){showToast('Nama player harus diisi','error');return;}
+  var id='p'+Date.now();
+  SB.from('players').insert({id:id,name:name,champ:0,runner:0,best:best,team:team}).run(function(e,d){
+    if(e||!d){showToast('Gagal tambah player','error');return;}
+    showToast('Player "'+name+'" ditambahkan!','success');
+    sbLoadAll();renderAdminPanel();
+  });
+}
+function adminDelPlayer(id){
+  if(!confirm('Hapus player ini?'))return;
+  SB.from('players').eq('id',id).del().run(function(){
+    showToast('Player dihapus','info');
+    sbLoadAll();renderAdminPanel();
+  });
+}
+function adminEditPlayer(id){
+  var players=sbGetP();
+  var p=players.find(function(x){return x.id===id});
+  if(!p)return;
+  var row=document.getElementById('aprow_'+id);
+  row.innerHTML='<div class="edit-row" style="flex-wrap:wrap;gap:5px;padding:3px 0">'
+    +'<input class="form-input" id="ep_name" value="'+p.name+'" placeholder="Nama" style="flex:1;min-width:90px;font-size:11px;padding:5px 8px">'
+    +'<input class="form-input" id="ep_champ" value="'+p.champ+'" type="number" min="0" style="width:60px;font-size:11px;padding:5px 8px" placeholder="Champ">'
+    +'<input class="form-input" id="ep_runner" value="'+p.runner+'" type="number" min="0" style="width:60px;font-size:11px;padding:5px 8px" placeholder="Runner">'
+    +'<select class="form-select" id="ep_best" style="width:60px;font-size:11px;padding:5px 8px"><option '+(p.best==='B'?'selected':'')+'>B</option><option '+(p.best==='B+'?'selected':'')+'>B+</option><option '+(p.best==='A'?'selected':'')+'>A</option><option '+(p.best==='S'?'selected':'')+'>S</option></select>'
+    +'<button class="btn-sm btn-sm-save" onclick="adminSavePlayer(\''+id+'\')">Simpan</button>'
+    +'<button class="btn-sm btn-sm-del" onclick="renderAdminPanel()">Batal</button>'
+    +'</div>';
+}
+function adminSavePlayer(id){
+  var updates={
+    name:(document.getElementById('ep_name')||{value:''}).value.trim(),
+    champ:parseInt((document.getElementById('ep_champ')||{value:'0'}).value)||0,
+    runner:parseInt((document.getElementById('ep_runner')||{value:'0'}).value)||0,
+    best:(document.getElementById('ep_best')||{value:'B'}).value
+  };
+  if(!updates.name){showToast('Nama player harus diisi','error');return;}
+  SB.from('players').eq('id',id).update(updates).run(function(e,data){
+    if(e){showToast('Gagal simpan: '+JSON.stringify(e),'error');return;}
+    // Update cache lokal langsung
+    if(_sbP){
+      var idx=_sbP.findIndex(function(x){return x.id===id;});
+      if(idx>=0) Object.assign(_sbP[idx],updates);
+    }
+    showToast('Player berhasil diupdate!','success');
+    sbRenderAll();renderAdminPanel();
+  });
+}
+function adminResetVotes(){
+  if(!confirm('Reset semua votes? Tindakan ini tidak bisa dibatalkan.'))return;
+  SB.from('votes').del().run(function(){
+    showToast('Semua votes direset!','info');
+    sbLoadVoting();
+    renderAdminPanel();
+  });
+}
+function adminSaveVoteConfig(){
+  var title=(document.getElementById('vcTitle')||{value:''}).value.trim();
+  var sub=(document.getElementById('vcSub')||{value:''}).value.trim();
+  var candsRaw=(document.getElementById('vcCands')||{value:''}).value;
+  var candidates=candsRaw.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
+  if(!title){showToast('Nama turnamen harus diisi','error');return;}
+  if(candidates.length<2){showToast('Minimal 2 kandidat','error');return;}
+  var oldCfg=getPredConfig();
+  var candidatesChanged=JSON.stringify(oldCfg.candidates)!==JSON.stringify(candidates);
+  // Update Supabase vote_config
+  SB.from('vote_config').eq('id',1).update({title:title,subtitle:sub,candidates:candidates}).run(function(e){
+    if(e){showToast('Gagal simpan konfigurasi','error');return;}
+    var newCfg={title:title,sub:sub,candidates:candidates};
+    DB.set('voteConfig',newCfg);
+    if(candidatesChanged){
+      // Reset semua votes di Supabase
+      SB.from('votes').del().run(function(){
+        showToast('Konfigurasi disimpan & votes direset!','success');
+        sbLogActivity('admin','Admin '+currentUser.username+' update voting: '+title+' (votes direset)');
+        sbLoadVoting();renderAdminPanel();
+      });
+    } else {
+      showToast('Konfigurasi voting berhasil disimpan!','success');
+      sbLogActivity('admin','Admin '+currentUser.username+' update voting: '+title);
+      sbLoadVoting();renderAdminPanel();
+    }
+  });
+}
+function adminResetDatabase(){
+  if(!confirm('PERHATIAN!\n\nIni akan menghapus SEMUA data turnamen & player dan mengembalikan ke default.\n\nData user & login tetap tersimpan.\n\nLanjutkan?'))return;
+  // Hapus semua dari Supabase lalu insert default
+  SB.from('tournaments').del().run(function(){
+    SB.from('players').del().run(function(){
+      SB.from('votes').del().run(function(){
+        // Insert default tournaments
+        var ts=DEFAULT_TOURNAMENTS.map(function(t){return{id:t.id,name:t.name,year:t.year,tier:t.tier,org:t.org,status:t.status,champ:t.champ,runner:t.runner,is2v2:t.is2v2};});
+        SB.from('tournaments').insert(ts).run(function(){
+          var ps=DEFAULT_PLAYERS.map(function(p){return{id:p.id,name:p.name,champ:p.champ,runner:p.runner,best:p.best,team:p.team||false};});
+          SB.from('players').insert(ps).run(function(){
+            showToast('Database direset ke default!','success');
+            sbLoadAll();sbLoadVoting();renderAdminPanel();
+          });
+        });
+      });
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   STATS BAR UPDATE
+   ═══════════════════════════════════════════════════ */
+function updateStatsBar(){
+  var tournaments=sbGetT();
+  var players=sbGetP();
+  document.getElementById('sbTournaments').textContent=tournaments.length;
+  document.getElementById('sbPlayers').textContent=players.length;
+  document.getElementById('sbCompleted').textContent=tournaments.filter(function(t){return t.status==='completed'}).length;
+  document.getElementById('sbCanceled').textContent=tournaments.filter(function(t){return t.status==='canceled'}).length;
+  document.getElementById('sbUpcoming').textContent=tournaments.filter(function(t){return t.status==='upcoming'}).length;
+}
+
+/* ═══════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════ */
+function openModal(html){
+  document.getElementById('mContent').innerHTML=html;
+  var ov=document.getElementById('overlay');
+  ov.style.display='flex';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){ov.classList.add('open')})});
+}
+function closeModal(){
+  var ov=document.getElementById('overlay');
+  ov.classList.remove('open');
+  setTimeout(function(){ov.style.display='none'},230);
+}
+function handleOverlayClick(e){if(e.target===document.getElementById('overlay'))closeModal()}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+var toastTimer=null;
+function showToast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+(type||'info')+' show';
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){t.classList.remove('show')},2800);
+}
+
+/* ═══════════════════════════════════════════════════
+   ORGANIZER FILTER
+   ═══════════════════════════════════════════════════ */
+function initFilter(){
+  var cur='all',si=document.getElementById('orgSearch');
+  document.querySelectorAll('.fpill').forEach(function(p){
+    p.addEventListener('click',function(){
+      document.querySelectorAll('.fpill').forEach(function(x){x.classList.remove('on')});
+      p.classList.add('on');cur=p.dataset.f;doFilter();
+    });
+  });
+  if(si) si.addEventListener('input',doFilter);
+  function doFilter(){
+    var q=si?si.value.toLowerCase():'',vis=0;
+    document.querySelectorAll('#orgContainer .tr').forEach(function(r){
+      var ok=(cur==='all'||r.dataset.tier===cur)&&(q===''||(r.dataset.txt||'').indexOf(q)!==-1);
+      r.classList.toggle('hidden',!ok);if(ok)vis++;
+    });
+    document.getElementById('noResult').style.display=vis===0?'block':'none';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════ */
+/* ═══ SUPABASE LOADERS - Tournaments & Players ═══ */
+function sbLoadTournaments(cb){
+  SB.from('tournaments').select('*').order('sort_order',false).run(function(err,data){
+    if(data&&data.length>0){
+      DB.set('tournaments',data);
+    }
+    if(cb) cb(data||sbGetT());
+  });
+}
+function sbLoadPlayers(cb){
+  SB.from('players').select('*').order('sort_order',false).run(function(err,data){
+    if(data&&data.length>0){
+      DB.set('players',data);
+    }
+    if(cb) cb(data||sbGetP());
+  });
+}
+function sbSaveTournaments(tournaments, cb){
+  // Upsert semua sekaligus
+  var tasks=tournaments.length; var done=0;
+  tournaments.forEach(function(t,i){
+    SB.from('tournaments').eq('id',t.id).update({
+      name:t.name,year:t.year,tier:t.tier,org:t.org,
+      status:t.status,champ:t.champ,runner:t.runner,is2v2:t.is2v2,sort_order:i+1
+    }).run(function(){done++;if(done===tasks&&cb)cb();});
+  });
+  DB.set('tournaments',tournaments);
+}
+function sbSavePlayers(players, cb){
+  var tasks=players.length; var done=0;
+  players.forEach(function(p,i){
+    SB.from('players').eq('id',p.id).update({
+      name:p.name,champ:p.champ,runner:p.runner,best:p.best,team:p.team||false,sort_order:i+1
+    }).run(function(){done++;if(done===tasks&&cb)cb();});
+  });
+  DB.set('players',players);
+}
+
+
+document.addEventListener('DOMContentLoaded',function(){
+  DB.init();
+  // Check session dari localStorage
+  try{
+    var sess=localStorage.getItem('asb_session');
+    if(sess){
+      var savedUser=JSON.parse(sess);
+      // Verifikasi user masih ada di Supabase
+      SB.from('users').select('*').eq('username',savedUser.username).run(function(e,d){
+        if(d&&d.length>0){
+          currentUser=d[0];
+          localStorage.setItem('asb_session',JSON.stringify(currentUser));
+          if(currentUser.role==='admin')document.getElementById('adminNavBtn').style.display='flex';
+        } else {
+          // User tidak ada lagi, logout
+          localStorage.removeItem('asb_session');
+          currentUser=null;
+        }
+        updateProfileUI();
+      });
+    } else {
+      updateProfileUI();
+    }
+  }catch(e){updateProfileUI();}
+
+  // Nav
+  document.querySelectorAll('.nav-btn').forEach(function(b){
+    b.addEventListener('click',function(){navTo(b.dataset.target)});
+  });
+
+  // Tier toggle
+  document.querySelectorAll('.ctbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.ctbtn').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');
+      document.getElementById('sysNew').style.display=b.dataset.sys==='new'?'block':'none';
+      document.getElementById('sysOld').style.display=b.dataset.sys==='old'?'block':'none';
+    });
+  });
+
+  // H2H
+  document.getElementById('h2hGo').addEventListener('click',showH2H);
+
+  // Load semua data dari Supabase
+  sbLoadAll();
+  sbLoadVoting();
+  startVotePolling();
+  loadAnnouncement();
+  startGlobalPolling();
+});
+
+/* ═══ ACTIVITY LOG - Supabase ═══ */
+function logActivity(type,msg){ sbLogActivity(type,msg); }
+function sbLogActivity(type,msg){
+  SB.from('activity_log').insert({type:type,message:msg}).run(function(){});
+}
+function adminClearLog(){
+  if(!confirm('Clear semua activity log?'))return;
+  // Hapus semua log dari Supabase
+  SB.from('activity_log').del().run(function(){
+    showToast('Log dikosongkan','info');renderAdminPanel();
+  });
+}
+/* ═══ ANNOUNCEMENTS - Supabase ═══ */
+function adminPostAnnounce(){
+  var txt=(document.getElementById('newAnnounce')||{value:''}).value.trim();
+  if(!txt){showToast('Tulis pengumuman dulu','error');return;}
+  SB.from('announcements').insert({text:txt,posted_by:currentUser.username}).run(function(e,d){
+    if(e){showToast('Gagal post pengumuman','error');return;}
+    sbLogActivity('admin','Admin '+currentUser.username+' post: "'+txt.substring(0,40)+'"');
+    showToast('Pengumuman diposting!','success');
+    loadAnnouncement();renderAdminPanel();
+  });
+}
+function adminDelAnnounce(id){
+  SB.from('announcements').eq('id',id).del().run(function(){
+    showToast('Pengumuman dihapus','info');loadAnnouncement();renderAdminPanel();
+  });
+}
+function loadAnnouncement(){
+  SB.from('announcements').select('*').order('created_at',true).limit(1).run(function(err,data){
+    var banner=document.getElementById('announceBanner');
+    var textEl=document.getElementById('announceText');
+    if(!banner||!textEl)return;
+    if(!data||!data.length){banner.style.display='none';return;}
+    var last=data[0];
+    var dismissed=localStorage.getItem('asb_dismissed');
+    if(dismissed===String(last.id)){banner.style.display='none';return;}
+    var d=new Date(last.created_at);
+    var t=d.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    textEl.textContent=last.text+' — '+last.posted_by+' ('+t+')';
+    banner.style.display='flex';
+  });
+}
+function dismissAnnounce(){
+  SB.from('announcements').select('id').order('created_at',true).limit(1).run(function(err,data){
+    if(data&&data.length) localStorage.setItem('asb_dismissed',String(data[0].id));
+    document.getElementById('announceBanner').style.display='none';
+  });
+}
+/* ═══ USER MANAGEMENT - Supabase ═══ */
+function adminCreateUser(){
+  var u=(document.getElementById('nuUser')||{value:''}).value.trim();
+  var p=(document.getElementById('nuPass')||{value:''}).value;
+  var roleEl=document.querySelector('input[name="nuRole"]:checked');
+  var role=roleEl?roleEl.value:'member';
+  if(u.length<3){showToast('Username minimal 3 karakter','error');return;}
+  if(p.length<6){showToast('Password minimal 6 karakter','error');return;}
+  SB.from('users').select('username').eq('username',u).run(function(e,d){
+    if(d&&d.length>0){showToast('Username sudah dipakai','error');return;}
+    SB.from('users').insert({username:u,password:p,role:role,avatar:''}).run(function(e2,d2){
+      if(e2||!d2){showToast('Gagal buat akun','error');return;}
+      sbLogActivity('admin','Admin '+currentUser.username+' buat akun: '+u+' ('+role+')');
+      showToast('Akun "'+u+'" dibuat!','success');renderAdminPanel();
+    });
+  });
+}
+function adminToggleRole(username,newRole){
+  // Cek jumlah admin dulu
+  SB.from('users').select('username').eq('role','admin').run(function(e,admins){
+    if(newRole==='member'&&admins&&admins.length<=1){showToast('Minimal harus ada 1 admin!','error');return;}
+    SB.from('users').eq('username',username).update({role:newRole}).run(function(e2){
+      sbLogActivity('admin','Admin '+currentUser.username+' ubah role '+username+' -> '+newRole);
+      showToast(username+' sekarang jadi '+newRole,'success');renderAdminPanel();
+    });
+  });
+}
+function adminResetUserPass(username){
+  var np=prompt('Password baru untuk "'+username+'" (min 6 karakter):');
+  if(!np)return;
+  if(np.length<6){showToast('Password minimal 6 karakter','error');return;}
+  SB.from('users').eq('username',username).update({password:np}).run(function(){
+    sbLogActivity('admin','Admin '+currentUser.username+' reset pw: '+username);
+    showToast('Password "'+username+'" direset!','success');
+  });
+}
+function adminDelUser(username){
+  if(!confirm('Hapus akun "'+username+'"?'))return;
+  SB.from('users').select('role').eq('username',username).run(function(e,d){
+    if(d&&d[0]&&d[0].role==='admin'){
+      SB.from('users').select('id').eq('role','admin').run(function(e2,admins){
+        if(admins&&admins.length<=1){showToast('Tidak bisa — minimal 1 admin!','error');return;}
+        sbDoDelUser(username);
+      });
+    } else { sbDoDelUser(username); }
+  });
+}
+function sbDoDelUser(username){
+  SB.from('users').eq('username',username).del().run(function(){
+    SB.from('votes').eq('username',username).del().run(function(){});
+    sbLogActivity('admin','Admin '+currentUser.username+' hapus akun: '+username);
+    showToast('Akun "'+username+'" dihapus','info');renderAdminPanel();
+  });
+}
+
+
+function forceResetLogin(){
+  localStorage.removeItem('asb_session');
+  currentUser=null;
+  updateProfileUI();
+  document.getElementById('loginUser').value='rayneasb';
+  document.getElementById('loginPass').value='adminasb';
+  showToast('Session dihapus. Coba login lagi.','info');
+}
+
+</script>
+</body>
+</html>
